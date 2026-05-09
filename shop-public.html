@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boutique — AnxHub Market</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#F7F6F3; --surface:#fff; --text:#18181B; --muted:#71717A;
+  --border:#E4E4E7; --radius:16px; --radius-sm:10px;
+  --max-w:1140px;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.06);
+  --shadow:0 4px 16px rgba(0,0,0,.08);
+  --shadow-lg:0 20px 60px rgba(0,0,0,.12);
+  /* Theme — dynamique via JS */
+  --theme:#ff4d00; --theme-h:#cc3d00; --theme-bg:rgba(255,77,0,.08);
+  --theme-border:rgba(255,77,0,.2);
+}
+html{font-size:16px;scroll-behavior:smooth;}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+
+/* ════════════════════════════════
+   SHOP VIEW
+════════════════════════════════ */
+#shopView{display:block;}
+#productPage{display:none;min-height:100vh;background:var(--bg);animation:fadeIn .28s ease;}
+
+/* ── BANNER ── */
+.banner{
+  background:var(--theme);color:#fff;
+  text-align:center;padding:10px 48px;
+  font-size:.78rem;font-weight:600;letter-spacing:.04em;
+  position:relative;
+}
+.banner-close{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  background:none;border:none;color:#fff;cursor:pointer;font-size:.9rem;opacity:.8;
+  transition:opacity .15s;
+}
+.banner-close:hover{opacity:1;}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:200;
+  background:rgba(255,255,255,.95);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);height:64px;
+  display:flex;align-items:center;
+}
+.nav-in{
+  max-width:var(--max-w);margin:0 auto;width:100%;
+  padding:0 24px;display:flex;align-items:center;
+  justify-content:space-between;gap:16px;
+}
+.nav-brand{
+  display:flex;align-items:center;gap:10px;
+  font-family:'Clash Display',sans-serif;font-weight:700;font-size:1rem;
+  color:var(--text);white-space:nowrap;
+}
+.nav-brand-av{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--theme);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.05rem;
+}
+.nav-brand-name{line-height:1.2;}
+.nav-brand-sub{font-size:.62rem;color:var(--muted);font-weight:500;font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:.01em;}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.nav-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:7px 14px;border-radius:8px;
+  font-size:.82rem;font-weight:600;transition:.18s;
+}
+.nb-ghost{border:1px solid var(--border);color:var(--muted);}
+.nb-ghost:hover{background:var(--bg);color:var(--text);}
+.nb-wa{background:#25d366;color:#fff;}
+.nb-wa:hover{background:#1da851;}
+.nb-dark{background:var(--text);color:#fff;}
+.nb-dark:hover{background:#27272a;}
+
+/* ── HERO ── */
+.hero{
+  max-width:var(--max-w);margin:0 auto;
+  padding:52px 24px 40px;
+}
+.hero-top{
+  display:flex;align-items:flex-start;gap:20px;
+  margin-bottom:24px;flex-wrap:wrap;
+}
+.hero-av{
+  width:80px;height:80px;border-radius:22px;
+  background:var(--theme);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.2rem;flex-shrink:0;
+  box-shadow:0 8px 28px rgba(0,0,0,.14);
+  border:3px solid rgba(255,255,255,.6);
+}
+.hero-meta{flex:1;}
+.hero-tags{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:9px;}
+.htag{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:.68rem;font-weight:700;letter-spacing:.04em;
+  border-radius:100px;padding:3px 10px;
+}
+.ht-online{background:#dcfce7;color:#166534;}
+.ht-online::before{content:'';width:5px;height:5px;border-radius:50%;background:#16a34a;}
+.ht-verified{background:#dbeafe;color:#1e3a8a;}
+.ht-cat{background:var(--theme-bg);color:var(--theme);border:1px solid var(--theme-border);}
+.hero-name{
+  font-family:'Clash Display',sans-serif;font-weight:700;
+  font-size:clamp(1.5rem,4vw,2.3rem);
+  letter-spacing:-.025em;line-height:1.15;margin-bottom:8px;color:var(--text);
+}
+.hero-desc{font-size:.9rem;color:var(--muted);line-height:1.7;max-width:520px;}
+.hero-stats{
+  display:flex;gap:0;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;
+  width:fit-content;max-width:100%;
+}
+.hstat{
+  padding:14px 24px;display:flex;flex-direction:column;align-items:center;gap:2px;
+  border-right:1px solid var(--border);
+}
+.hstat:last-child{border-right:none;}
+.hstat-val{font-family:'Clash Display',sans-serif;font-size:1.35rem;font-weight:700;color:var(--text);}
+.hstat-lbl{font-size:.68rem;color:var(--muted);font-weight:500;}
+
+/* ── MANAGER BAR ── */
+.mgr{
+  background:var(--text);color:#fff;
+  max-width:var(--max-w);margin:0 auto;
+  border-radius:var(--radius);padding:13px 20px;
+  display:none;align-items:center;gap:12px;flex-wrap:wrap;
+  margin-bottom:16px;
+}
+.mgr.show{display:flex;}
+.mgr-badge{
+  background:rgba(255,77,0,.2);color:#ff7a3d;
+  border-radius:100px;padding:3px 10px;
+  font-size:.68rem;font-weight:700;letter-spacing:.04em;
+  font-family:'Clash Display',sans-serif;
+}
+.mgr-txt{font-size:.8rem;color:rgba(255,255,255,.5);flex:1;}
+.mgr-btn{
+  display:flex;align-items:center;gap:5px;
+  padding:7px 13px;border-radius:8px;font-size:.78rem;font-weight:600;
+  transition:.18s;cursor:pointer;
+}
+.mb-add{background:var(--theme);color:#fff;}.mb-add:hover{background:var(--theme-h);}
+.mb-toggle{background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);}.mb-toggle:hover{background:rgba(255,255,255,.14);}
+.mb-dash{background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);}.mb-dash:hover{background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);}
+
+/* ── SHOP MAIN ── */
+.shop-main{max-width:var(--max-w);margin:0 auto;padding:0 24px 80px;}
+.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;}
+.sec-title{font-family:'Clash Display',sans-serif;font-size:1.15rem;font-weight:700;letter-spacing:-.02em;}
+.sec-count{font-size:.8rem;color:var(--muted);font-weight:500;}
+
+/* Filter bar */
+.fbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:20px;}
+.fchip{
+  padding:6px 14px;border-radius:100px;
+  border:1px solid var(--border);background:var(--surface);
+  font-size:.78rem;font-weight:500;color:var(--muted);
+  cursor:pointer;transition:.18s;
+}
+.fchip:hover{border-color:var(--text);color:var(--text);}
+.fchip.on{background:var(--text);border-color:var(--text);color:#fff;}
+.fsearch{
+  margin-left:auto;
+  display:flex;align-items:center;gap:7px;
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  background:var(--surface);padding:7px 12px;
+  transition:.18s;
+}
+.fsearch:focus-within{border-color:var(--text);}
+.fsearch input{border:none;outline:none;font-size:.82rem;color:var(--text);background:transparent;width:170px;font-family:'Plus Jakarta Sans',sans-serif;}
+.fsearch input::placeholder{color:var(--muted);}
+
+/* ── PRODUCT CARDS GRID ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:16px;}
+
+.card{
+  background:var(--surface);border-radius:var(--radius);
+  border:1px solid var(--border);
+  overflow:hidden;display:flex;flex-direction:column;
+  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;
+  animation:fadeUp .4s ease both;cursor:pointer;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+.card:nth-child(1){animation-delay:.04s}.card:nth-child(2){animation-delay:.09s}
+.card:nth-child(3){animation-delay:.14s}.card:nth-child(4){animation-delay:.18s}
+.card:nth-child(5){animation-delay:.22s}.card:nth-child(6){animation-delay:.26s}
+@media(hover:hover){
+  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:transparent;}
+  .card:hover .card-cover-inner{transform:scale(1.04);}
+}
+
+.card-cover{position:relative;width:100%;padding-top:60%;overflow:hidden;}
+.card-cover-inner{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .4s ease;
+}
+.card-cover-pattern{
+  position:absolute;inset:0;opacity:.05;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 9px,rgba(255,255,255,1) 9px,rgba(255,255,255,1) 10px),
+    repeating-linear-gradient(90deg,transparent,transparent 9px,rgba(255,255,255,1) 9px,rgba(255,255,255,1) 10px);
+}
+.card-cover-logo{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+}
+.card-cover-icon{
+  width:54px;height:54px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.35rem;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(8px);
+}
+.card-cover-tag{
+  font-size:.66rem;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(255,255,255,.55);
+}
+.card-badge{
+  position:absolute;top:10px;left:10px;z-index:2;
+  background:rgba(24,24,27,.8);color:#fff;
+  font-size:.67rem;font-weight:700;letter-spacing:.03em;
+  padding:3px 9px;border-radius:100px;backdrop-filter:blur(4px);
+}
+.card-disc{
+  position:absolute;top:10px;right:10px;z-index:2;
+  background:var(--theme);color:#fff;
+  font-family:'Clash Display',sans-serif;font-weight:700;font-size:.7rem;
+  padding:3px 9px;border-radius:100px;
+}
+.card-del{
+  position:absolute;bottom:8px;right:8px;z-index:3;
+  width:26px;height:26px;border-radius:7px;
+  background:rgba(220,38,38,.15);color:#dc2626;
+  display:none;align-items:center;justify-content:center;font-size:.7rem;
+  cursor:pointer;transition:.18s;border:none;
+}
+.card-del:hover{background:rgba(220,38,38,.28);}
+.card:hover .card-del.owner{display:flex;}
+
+.card-body{padding:14px 15px 15px;display:flex;flex-direction:column;gap:9px;flex:1;}
+.card-subtag{font-size:.67rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+.card-title{font-family:'Clash Display',sans-serif;font-size:.92rem;font-weight:600;line-height:1.4;color:var(--text);min-height:2.8em;}
+.card-footer{margin-top:auto;display:flex;flex-direction:column;gap:9px;}
+.price-row{display:flex;align-items:center;justify-content:space-between;gap:6px;}
+.price-block{display:flex;align-items:baseline;gap:5px;}
+.price-new{font-family:'Clash Display',sans-serif;font-size:1.02rem;font-weight:700;}
+.price-old{font-size:.74rem;color:#a1a1aa;text-decoration:line-through;}
+.btn-details{
+  font-size:.74rem;font-weight:500;color:var(--muted);
+  background:none;border:none;cursor:pointer;
+  text-decoration:underline;text-underline-offset:2px;
+  transition:color .15s;white-space:nowrap;padding:0;
+}
+.btn-details:hover{color:var(--text);}
+.btn-buy{
+  width:100%;background:var(--text);color:#fff;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:.87rem;
+  border:none;border-radius:var(--radius-sm);padding:11px 14px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;
+  transition:background .18s,transform .14s;min-height:44px;
+}
+.btn-buy:hover{background:#27272a;}
+.btn-buy:active{transform:scale(.98);}
+
+/* ── PROMO SECTION ── */
+.promo-wrap{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:18px 20px;
+  margin-bottom:28px;
+}
+.promo-label{font-size:.78rem;font-weight:600;color:var(--text);margin-bottom:10px;}
+.promo-row{
+  display:flex;align-items:center;gap:0;
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  overflow:hidden;background:var(--bg);
+}
+.promo-input{
+  flex:1;padding:10px 12px;border:none;outline:none;
+  font-size:.85rem;color:var(--text);background:transparent;
+  font-family:'Plus Jakarta Sans',sans-serif;text-transform:uppercase;
+}
+.promo-apply{
+  padding:9px 16px;background:var(--text);color:#fff;
+  font-size:.8rem;font-weight:600;cursor:pointer;transition:.18s;
+  border:none;font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap;
+}
+.promo-apply:hover{background:#27272a;}
+.promo-msg{margin-top:8px;font-size:.8rem;font-weight:600;}
+.promo-ok{color:#16a34a;}.promo-fail{color:#dc2626;}
+
+/* ── REVIEWS ── */
+.reviews-wrap{margin-bottom:40px;}
+.rev-head{display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;}
+.rev-score{font-family:'Clash Display',sans-serif;font-size:3rem;font-weight:700;color:var(--text);line-height:1;}
+.rev-stars{display:flex;gap:3px;margin-bottom:3px;}
+.rev-stars i{color:#E8A020;font-size:.85rem;}
+.rev-count{font-size:.78rem;color:var(--muted);}
+.rev-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.rev-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:18px;
+}
+.rc-stars{display:flex;gap:2px;margin-bottom:9px;}
+.rc-stars i{color:#E8A020;font-size:.7rem;}
+.rc-text{font-size:.84rem;color:#52525b;line-height:1.75;margin-bottom:11px;font-style:italic;}
+.rc-author{display:flex;align-items:center;gap:9px;}
+.rc-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#fff;flex-shrink:0;}
+.rc-name{font-size:.8rem;font-weight:600;color:var(--text);}
+.rc-date{font-size:.68rem;color:var(--muted);}
+
+/* ── EMPTY ── */
+.empty{grid-column:1/-1;text-align:center;padding:52px 0;}
+.empty-ic{font-size:2.6rem;margin-bottom:12px;}
+.empty-t{font-family:'Clash Display',sans-serif;font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:5px;}
+.empty-s{font-size:.82rem;color:var(--muted);}
+
+/* ════════════════════════════════
+   PRODUCT PAGE (routing #hash)
+════════════════════════════════ */
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+.pp-topbar{
+  position:sticky;top:0;z-index:200;
+  background:rgba(255,255,255,.95);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  height:58px;display:flex;align-items:center;padding:0 20px;gap:12px;
+}
+.pp-back{
+  display:flex;align-items:center;gap:6px;
+  background:none;border:none;cursor:pointer;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.87rem;font-weight:600;
+  color:var(--text);padding:6px 12px 6px 8px;border-radius:8px;transition:background .15s;
+  flex-shrink:0;
+}
+.pp-back:hover{background:#f4f4f5;}
+.pp-topbar-title{
+  font-family:'Clash Display',sans-serif;font-size:.88rem;font-weight:700;
+  color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;
+}
+.pp-share-btn{
+  display:flex;align-items:center;gap:5px;
+  background:#f4f4f5;border:none;cursor:pointer;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;font-weight:600;
+  color:var(--text);padding:6px 12px;border-radius:8px;transition:background .15s;
+  white-space:nowrap;flex-shrink:0;
+}
+.pp-share-btn:hover{background:#e4e4e7;}
+
+.pp-hero{
+  width:100%;height:220px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.pp-hero-pattern{
+  position:absolute;inset:0;opacity:.05;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 9px,rgba(255,255,255,1) 9px,rgba(255,255,255,1) 10px),
+    repeating-linear-gradient(90deg,transparent,transparent 9px,rgba(255,255,255,1) 9px,rgba(255,255,255,1) 10px);
+}
+.pp-hero-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:7px;}
+.pp-hero-icon{font-size:3rem;color:#fff;}
+.pp-hero-name{font-size:.78rem;font-weight:600;color:rgba(255,255,255,.55);letter-spacing:.1em;text-transform:uppercase;}
+
+.pp-body{max-width:640px;margin:0 auto;padding:24px 20px 64px;}
+.pp-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.pp-disc{background:var(--theme);color:#fff;font-family:'Clash Display',sans-serif;font-weight:700;font-size:.7rem;padding:3px 10px;border-radius:100px;}
+.pp-tag{background:var(--bg);color:var(--muted);border:1px solid var(--border);font-size:.7rem;font-weight:600;padding:3px 10px;border-radius:100px;}
+.pp-title{
+  font-family:'Clash Display',sans-serif;font-size:clamp(1.3rem,4vw,1.7rem);
+  font-weight:700;line-height:1.25;letter-spacing:-.02em;
+  margin-bottom:18px;color:var(--text);
+}
+.pp-price-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:18px 20px;margin-bottom:18px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+}
+.pp-prices{display:flex;align-items:baseline;gap:10px;}
+.pp-price-new{font-family:'Clash Display',sans-serif;font-size:1.9rem;font-weight:700;color:var(--text);}
+.pp-price-old{font-size:.95rem;color:#a1a1aa;text-decoration:line-through;}
+.pp-savings{font-size:.76rem;font-weight:700;color:#16a34a;background:#dcfce7;padding:4px 10px;border-radius:100px;white-space:nowrap;}
+.pp-desc-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:18px 20px;margin-bottom:18px;
+}
+.pp-desc-title{
+  font-family:'Clash Display',sans-serif;font-size:.78rem;font-weight:700;
+  color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:12px;
+}
+.pp-desc-text{font-size:.9rem;color:#374151;line-height:1.85;white-space:pre-line;}
+.pp-contact{
+  background:#FFF7E6;border:1px solid #FDDFA0;
+  border-radius:var(--radius);padding:16px 20px;margin-bottom:22px;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.pp-contact-txt{flex:1;font-size:.84rem;color:#92400e;line-height:1.5;}
+.pp-contact-txt strong{font-family:'Clash Display',sans-serif;display:block;margin-bottom:2px;}
+.pp-wa-link{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#25d366;color:#fff;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:.82rem;
+  padding:9px 14px;border-radius:9px;transition:background .15s;white-space:nowrap;
+}
+.pp-wa-link:hover{background:#1da851;}
+.pp-buy{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;background:var(--text);color:#fff;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:1rem;
+  border:none;border-radius:var(--radius);padding:16px;cursor:pointer;
+  transition:background .18s,transform .14s;min-height:56px;
+}
+.pp-buy:hover{background:#27272a;}
+.pp-buy:active{transform:scale(.99);}
+.pp-other-title{font-family:'Clash Display',sans-serif;font-size:1rem;font-weight:700;letter-spacing:-.01em;margin:32px 0 14px;}
+.pp-other-grid{display:flex;flex-direction:column;gap:9px;}
+.pp-other-item{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:13px 16px;
+  display:flex;align-items:center;gap:13px;cursor:pointer;
+  transition:border-color .18s,box-shadow .18s,transform .15s;
+}
+.pp-other-item:hover{border-color:var(--theme);box-shadow:0 4px 14px rgba(0,0,0,.06);transform:translateY(-1px);}
+.pp-other-icon{width:38px;height:38px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.95rem;}
+.pp-other-name{font-size:.86rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pp-other-price{font-size:.78rem;color:var(--muted);margin-top:1px;}
+.pp-other-arr{color:var(--muted);font-size:1rem;flex-shrink:0;margin-left:auto;}
+
+/* ── MODALS ── */
+.overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.45);z-index:500;
+  align-items:flex-end;justify-content:center;
+  backdrop-filter:blur(4px);
+}
+.overlay.open{display:flex;}
+.modal{
+  background:var(--surface);border-radius:20px 20px 0 0;
+  width:100%;max-width:100%;position:relative;
+  animation:slideUp .28s cubic-bezier(.25,.46,.45,.94);
+  overflow:hidden;max-height:92vh;display:flex;flex-direction:column;
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:none;}}
+.modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:14px auto 0;flex-shrink:0;}
+.modal-close-btn{
+  position:absolute;top:14px;right:14px;
+  background:#f4f4f5;border:none;width:32px;height:32px;
+  border-radius:50%;font-size:.85rem;cursor:pointer;color:#52525b;z-index:10;
+  display:flex;align-items:center;justify-content:center;transition:background .15s;
+}
+.modal-close-btn:hover{background:#e4e4e7;}
+.modal-banner{width:100%;height:160px;flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative;}
+.modal-banner-pattern{position:absolute;inset:0;opacity:.05;background-image:repeating-linear-gradient(0deg,transparent,transparent 9px,rgba(255,255,255,1) 9px,rgba(255,255,255,1) 10px),repeating-linear-gradient(90deg,transparent,transparent 9px,rgba(255,255,255,1) 9px,rgba(255,255,255,1) 10px);}
+.modal-banner-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.modal-banner-ic{font-size:2rem;color:#fff;}
+.modal-banner-nm{font-size:.72rem;font-weight:600;color:rgba(255,255,255,.55);letter-spacing:.1em;text-transform:uppercase;}
+.modal-body{padding:18px 20px 22px;overflow-y:auto;flex:1;}
+.modal-eyebrow{display:flex;align-items:center;gap:7px;margin-bottom:9px;flex-wrap:wrap;}
+.m-disc{background:var(--theme);color:#fff;font-family:'Clash Display',sans-serif;font-weight:700;font-size:.68rem;padding:2px 9px;border-radius:100px;}
+.m-tag{background:var(--bg);color:var(--muted);font-size:.68rem;font-weight:600;padding:2px 9px;border-radius:100px;border:1px solid var(--border);}
+.modal-title{font-family:'Clash Display',sans-serif;font-size:1.1rem;font-weight:700;line-height:1.3;margin-bottom:8px;}
+.modal-prices{display:flex;align-items:baseline;gap:9px;margin-bottom:14px;}
+.m-price-new{font-family:'Clash Display',sans-serif;font-size:1.5rem;font-weight:700;}
+.m-price-old{font-size:.88rem;color:#a1a1aa;text-decoration:line-through;}
+.modal-desc{font-size:.87rem;color:#52525b;line-height:1.8;white-space:pre-line;border-top:1px solid var(--border);padding-top:14px;margin-bottom:18px;}
+.modal-buy{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;background:var(--text);color:#fff;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;
+  border:none;border-radius:12px;padding:14px;font-size:.95rem;cursor:pointer;
+  transition:background .18s;min-height:50px;
+}
+.modal-buy:hover{background:#27272a;}
+
+/* ADD PRODUCT MODAL */
+.add-modal-body{padding:18px 20px 24px;overflow-y:auto;flex:1;}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px;}
+.field label{font-size:.76rem;font-weight:600;color:var(--muted);}
+.field input,.field select,.field textarea{
+  width:100%;padding:9px 11px;border:1px solid var(--border);
+  border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.86rem;
+  color:var(--text);outline:none;transition:.18s;background:var(--surface);
+  appearance:none;-webkit-appearance:none;resize:none;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--text);}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.emoji-pick{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.ep{
+  width:36px;height:36px;border-radius:8px;
+  border:1.5px solid var(--border);background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.95rem;cursor:pointer;transition:.18s;
+}
+.ep:hover,.ep.on{border-color:var(--text);background:var(--bg);}
+.btn-full{
+  width:100%;padding:11px;border-radius:var(--radius-sm);
+  background:var(--text);color:#fff;border:none;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.87rem;font-weight:600;
+  cursor:pointer;transition:.18s;display:flex;align-items:center;justify-content:center;gap:7px;
+  margin-bottom:0;
+}
+.btn-full:hover{background:#27272a;}
+.btn-full:disabled{opacity:.55;pointer-events:none;}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(6px);
+  background:#18181b;color:#fff;
+  font-size:.83rem;font-weight:500;
+  padding:10px 18px;border-radius:100px;
+  opacity:0;transition:opacity .2s,transform .2s;
+  pointer-events:none;z-index:9999;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+.spinner{width:15px;height:15px;border-radius:50%;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;animation:sp .6s linear infinite;}
+@keyframes sp{to{transform:rotate(360deg);}}
+
+/* Footer */
+.footer{background:var(--text);padding:20px 24px;text-align:center;font-size:.75rem;color:rgba(255,255,255,.25);}
+.footer a{color:rgba(255,77,0,.7);font-weight:500;}
+
+/* ════════════ RESPONSIVE ANDROID ════════════ */
+@media(min-width:600px){
+  .overlay{align-items:center;padding:20px;}
+  .modal{border-radius:20px;max-width:460px;width:94%;animation:popIn .25s cubic-bezier(.25,.46,.45,.94);}
+  @keyframes popIn{from{opacity:0;transform:scale(.95);}to{opacity:1;transform:none;}}
+  .modal-handle{display:none;}
+}
+@media(min-width:1024px){
+  .grid{grid-template-columns:repeat(4,1fr);gap:18px;}
+}
+@media(max-width:768px){
+  /* Nav */
+  .nav-right .nav-btn.nb-ghost{display:none;}
+  .nav-brand-sub{display:none;}
+  /* Hero */
+  .hero{padding:28px 16px 32px;}
+  .hero-top{gap:14px;}
+  .hero-av{width:64px;height:64px;font-size:1.7rem;border-radius:16px;}
+  .hero-name{font-size:1.4rem;}
+  .hero-desc{font-size:.84rem;}
+  .hero-stats{width:100%;border-radius:var(--radius);}
+  .hstat{flex:1;padding:11px 12px;}
+  .hstat-val{font-size:1.15rem;}
+  .hstat-lbl{font-size:.64rem;}
+  /* Manager bar */
+  .mgr{flex-wrap:wrap;gap:6px;border-radius:var(--radius);margin:0 16px 12px;}
+  .mgr-txt{display:none;}
+  /* Shop main */
+  .shop-main{padding:0 16px 60px;}
+  .fbar{gap:5px;}
+  .fchip{padding:5px 11px;font-size:.75rem;}
+  /* Cards */
+  .grid{gap:10px;}
+  .card-body{padding:11px 12px 12px;}
+  .card-title{font-size:.87rem;min-height:2.6em;}
+  .price-new{font-size:.96rem;}
+  .btn-buy{padding:10px 12px;font-size:.82rem;}
+  /* Reviews */
+  .rev-grid{grid-template-columns:1fr;}
+  .rev-score{font-size:2.5rem;}
+  /* Product page */
+  .pp-topbar{padding:0 14px;height:52px;}
+  .pp-topbar-title{font-size:.82rem;}
+  .pp-share-btn span{display:none;}
+  .pp-hero{height:180px;}
+  .pp-hero-icon{font-size:2.4rem;}
+  .pp-body{padding:18px 16px 56px;}
+  .pp-title{font-size:1.3rem;}
+  .pp-price-new{font-size:1.6rem;}
+  .pp-price-card{padding:14px 16px;}
+  .pp-desc-card{padding:14px 16px;}
+  .pp-contact{padding:13px 15px;gap:10px;}
+  .pp-buy{padding:14px;font-size:.95rem;}
+}
+@media(max-width:480px){
+  /* Nav */
+  nav{height:56px;}
+  .nav-in{padding:0 14px;}
+  .nav-brand-name{font-size:.9rem;}
+  .nav-btn{padding:6px 11px;font-size:.76rem;}
+  .nb-wa span{display:none;}
+  /* Banner */
+  .banner{padding:8px 36px;font-size:.72rem;}
+  /* Hero */
+  .hero{padding:22px 14px 26px;}
+  .hero-top{flex-direction:column;align-items:flex-start;gap:12px;}
+  .hero-av{width:56px;height:56px;font-size:1.5rem;border-radius:14px;}
+  .hero-name{font-size:1.25rem;}
+  .hero-stats{border-radius:var(--radius-sm);}
+  .hstat{padding:10px;}
+  .hstat-val{font-size:1rem;}
+  /* Grid 2 col */
+  .grid{grid-template-columns:1fr 1fr;gap:8px;}
+  .card-body{padding:9px 10px 10px;}
+  .card-title{font-size:.8rem;min-height:2.4em;}
+  .card-subtag{font-size:.6rem;}
+  .price-new{font-size:.88rem;}
+  .price-old{font-size:.68rem;}
+  .btn-details{font-size:.68rem;}
+  .btn-buy{padding:9px 10px;font-size:.78rem;gap:4px;}
+  /* Promo */
+  .promo-wrap{padding:14px 16px;}
+  .promo-input{font-size:.8rem;}
+  .promo-apply{padding:8px 12px;font-size:.76rem;}
+  /* Modals */
+  .modal{max-height:88vh;}
+  .modal-body{padding:14px 16px 18px;}
+  .modal-banner{height:130px;}
+  .add-modal-body{padding:14px 16px 20px;}
+  .field input,.field select,.field textarea{font-size:.83rem;}
+  .field-row{grid-template-columns:1fr;}
+  /* Reviews */
+  .rev-card{padding:14px;}
+  .rc-text{font-size:.8rem;}
+  /* Footer */
+  .footer{padding:16px;}
+  /* Product page */
+  .pp-hero{height:160px;}
+  .pp-hero-icon{font-size:2rem;}
+  .pp-body{padding:14px 14px 52px;}
+  .pp-price-new{font-size:1.5rem;}
+  .pp-savings{font-size:.7rem;padding:3px 8px;}
+  .pp-desc-text{font-size:.85rem;}
+  .pp-contact{flex-direction:column;align-items:flex-start;gap:8px;}
+  .pp-wa-link{width:100%;justify-content:center;}
+  .pp-buy{font-size:.9rem;padding:13px;}
+  .pp-other-item{padding:11px 12px;}
+  .pp-other-icon{width:34px;height:34px;font-size:.85rem;}
+  .pp-other-name{font-size:.8rem;}
+}
+@media(max-width:360px){
+  .nav-in{padding:0 10px;}
+  .nav-brand-name{font-size:.84rem;}
+  .hero{padding:18px 12px 22px;}
+  .hero-name{font-size:1.1rem;}
+  .shop-main{padding:0 12px 52px;}
+  .grid{gap:6px;}
+  .card-body{padding:8px 9px 9px;}
+  .card-title{font-size:.76rem;}
+  .btn-buy{font-size:.74rem;padding:8px;}
+  .hstat{padding:8px;}
+  .hstat-val{font-size:.9rem;}
+  .promo-wrap{padding:12px;}
+  .modal-body{padding:12px 14px 16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toastEl"></div>
+
+<!-- ╔══════════════════════════════════╗
+     ║  SHOP VIEW (page principale)    ║
+     ╚══════════════════════════════════╝ -->
+<div id="shopView">
+
+  <!-- Banner -->
+  <div class="banner" id="bannerEl">
+    ✦ Boutique active — Commandez directement via WhatsApp !
+    <button class="banner-close" onclick="this.parentElement.remove()">✕</button>
+  </div>
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-in">
+      <div class="nav-brand">
+        <div class="nav-brand-av" id="navAv">🦁</div>
+        <div>
+          <div class="nav-brand-name" id="navName">Boutique</div>
+          <div class="nav-brand-sub">anxhub.market/<span id="navSlug">—</span></div>
+        </div>
+      </div>
+      <div class="nav-right">
+        <button class="nav-btn nb-ghost" id="btnAbout">À propos</button>
+        <button class="nav-btn nb-ghost" id="btnContact">Contact</button>
+        <button class="nav-btn nb-wa" id="navWaBtn"><i class="fab fa-whatsapp"></i> <span>WhatsApp</span></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div id="mgrBar" class="mgr">
+      <div class="mgr-badge">Propriétaire</div>
+      <div class="mgr-txt">Mode gérant — Gère tes produits en temps réel</div>
+      <div class="mgr-btn mb-add" onclick="openAddModal()"><i class="fas fa-plus"></i> Ajouter un produit</div>
+      <div class="mgr-btn mb-toggle" id="toggleBtn" onclick="toggleShop()"><i class="fas fa-power-off"></i> <span id="toggleLabel">Mettre hors ligne</span></div>
+      <a class="mgr-btn mb-dash" href="dashboard.html"><i class="fas fa-gauge"></i> Dashboard</a>
+    </div>
+    <div class="hero-top">
+      <div class="hero-av" id="heroAv">🦁</div>
+      <div class="hero-meta">
+        <div class="hero-tags">
+          <div class="htag ht-online" id="tagOnline">En ligne</div>
+          <div class="htag ht-verified" id="tagVerified" style="display:none"><i class="fas fa-circle-check"></i> Vérifié</div>
+          <div class="htag ht-cat" id="tagCat">Digital</div>
+        </div>
+        <div class="hero-name" id="heroName">Chargement...</div>
+        <div class="hero-desc" id="heroDesc">...</div>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-val" id="hViews">0</div><div class="hstat-lbl">Visites</div></div>
+      <div class="hstat"><div class="hstat-val" id="hProds">0</div><div class="hstat-lbl">Produits</div></div>
+      <div class="hstat"><div class="hstat-val" id="hSales">0</div><div class="hstat-lbl">Ventes</div></div>
+      <div class="hstat"><div class="hstat-val" id="hRating">—</div><div class="hstat-lbl">Note</div></div>
+    </div>
+  </div>
+
+  <!-- Shop main -->
+  <div class="shop-main">
+
+    <!-- Promo code -->
+    <div class="promo-wrap">
+      <div class="promo-label">🎫 Code promo</div>
+      <div class="promo-row">
+        <input class="promo-input" type="text" id="promoCode" placeholder="Entre ton code..." maxlength="20">
+        <button class="promo-apply" onclick="applyPromo()">Appliquer</button>
+      </div>
+      <div class="promo-msg" id="promoMsg" style="display:none"></div>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="fbar" id="fbar">
+      <span class="fbar-label" style="font-size:.84rem;font-weight:600;color:var(--text);margin-right:2px">Produits</span>
+      <div class="fchip on" data-cat="all" onclick="filterCat('all',this)">Tous</div>
+      <div class="fchip" data-cat="vpn" onclick="filterCat('vpn',this)">🛡️ VPN</div>
+      <div class="fchip" data-cat="streaming" onclick="filterCat('streaming',this)">🎬 Streaming</div>
+      <div class="fchip" data-cat="ai" onclick="filterCat('ai',this)">🤖 IA</div>
+      <div class="fchip" data-cat="gaming" onclick="filterCat('gaming',this)">🎮 Gaming</div>
+      <div class="fchip" data-cat="software" onclick="filterCat('software',this)">🔑 Logiciels</div>
+      <div class="fsearch">
+        <i class="fas fa-magnifying-glass" style="color:var(--muted);font-size:.76rem;flex-shrink:0;"></i>
+        <input type="text" placeholder="Rechercher..." id="searchInp" oninput="filterSearch(this.value)">
+      </div>
+    </div>
+
+    <div class="sec-hd">
+      <span class="sec-title" id="secTitle">Catalogue</span>
+      <span class="sec-count" id="secCount">0 produits</span>
+    </div>
+    <div class="grid" id="prodGrid">
+      <div class="empty"><div class="empty-ic">⏳</div><div class="empty-t">Chargement...</div></div>
+    </div>
+
+    <!-- Reviews -->
+    <div class="reviews-wrap" id="reviewsWrap" style="margin-top:48px;">
+      <div class="sec-title" style="margin-bottom:16px">Avis clients</div>
+      <div class="rev-head">
+        <div class="rev-score" id="revScore">4.9</div>
+        <div>
+          <div class="rev-stars" id="revStars"></div>
+          <div class="rev-count" id="revCount">Avis vérifiés</div>
+        </div>
+      </div>
+      <div class="rev-grid" id="revGrid"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Boutique hébergée sur <a href="index.html">AnxHub Market</a> ·
+    <a href="auth.html">Crée la tienne gratuitement</a>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════╗
+     ║  PRODUCT PAGE (routing #hash)   ║
+     ╚══════════════════════════════════╝ -->
+<div id="productPage">
+  <div class="pp-topbar">
+    <button class="pp-back" id="ppBack">
+      <i class="fas fa-chevron-left" style="font-size:.82rem;"></i> Retour
+    </button>
+    <div class="pp-topbar-title" id="ppTopTitle"></div>
+    <button class="pp-share-btn" id="ppShareBtn">
+      <i class="fas fa-share-nodes" style="font-size:.8rem;"></i> <span>Partager</span>
+    </button>
+  </div>
+  <div class="pp-hero" id="ppHero">
+    <div class="pp-hero-pattern"></div>
+    <div class="pp-hero-content">
+      <div class="pp-hero-icon" id="ppHeroIcon"></div>
+      <div class="pp-hero-name" id="ppHeroName"></div>
+    </div>
+  </div>
+  <div class="pp-body">
+    <div class="pp-eyebrow">
+      <span class="pp-disc" id="ppDisc"></span>
+      <span class="pp-tag" id="ppTag"></span>
+    </div>
+    <div class="pp-title" id="ppTitle"></div>
+    <div class="pp-price-card">
+      <div class="pp-prices">
+        <span class="pp-price-new" id="ppPriceNew"></span>
+        <span class="pp-price-old" id="ppPriceOld"></span>
+      </div>
+      <span class="pp-savings" id="ppSavings"></span>
+    </div>
+    <div class="pp-desc-card">
+      <div class="pp-desc-title">Détails du produit</div>
+      <div class="pp-desc-text" id="ppDesc"></div>
+    </div>
+    <div class="pp-contact">
+      <div class="pp-contact-txt"><strong>Une question ?</strong>Contacte le vendeur avant d'acheter.</div>
+      <div class="pp-wa-link" id="ppWaLink"><i class="fab fa-whatsapp"></i> WhatsApp</div>
+    </div>
+    <div class="pp-buy" id="ppBuyBtn" onclick="orderWa(window._ppProd?.name || '')">
+      <i class="fab fa-whatsapp"></i> Commander maintenant
+    </div>
+    <div class="pp-other-title">Autres produits</div>
+    <div class="pp-other-grid" id="ppOtherGrid"></div>
+  </div>
+</div>
+
+<!-- MODALS -->
+
+<!-- Product detail modal (quick view) -->
+<div class="overlay" id="prodOverlay">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <button class="modal-close-btn" id="prodModalClose"><i class="fas fa-xmark"></i></button>
+    <div class="modal-banner" id="mBanner">
+      <div class="modal-banner-pattern"></div>
+      <div class="modal-banner-inner">
+        <div class="modal-banner-ic" id="mBannerIcon"></div>
+        <div class="modal-banner-nm" id="mBannerName"></div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-eyebrow">
+        <span class="m-disc" id="mDisc"></span>
+        <span class="m-tag" id="mTag"></span>
+      </div>
+      <div class="modal-title" id="mTitle"></div>
+      <div class="modal-prices">
+        <span class="m-price-new" id="mPriceNew"></span>
+        <span class="m-price-old" id="mPriceOld"></span>
+      </div>
+      <div class="modal-desc" id="mDesc"></div>
+      <button class="modal-buy" id="mBuyBtn"><i class="fab fa-whatsapp"></i> Commander via WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<!-- About modal -->
+<div class="overlay" id="aboutOverlay">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <button class="modal-close-btn" id="aboutClose"><i class="fas fa-xmark"></i></button>
+    <div class="modal-body" style="padding:22px 20px 28px;">
+      <div style="width:64px;height:64px;border-radius:50%;background:var(--theme);display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin-bottom:14px;" id="aboutAv">🦁</div>
+      <div style="font-family:'Clash Display',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:3px;" id="aboutName">Vendeur</div>
+      <div style="font-size:.8rem;color:var(--theme);font-weight:600;margin-bottom:12px;" id="aboutRole">Vendeur digital</div>
+      <p style="font-size:.87rem;color:#52525b;line-height:1.78;margin-bottom:16px;" id="aboutBio">Boutique digitale sur AnxHub Market.</p>
+      <div style="background:#FFF7E6;border:1px solid #FDDFA0;border-radius:12px;padding:14px 16px;font-size:.87rem;line-height:1.7;color:#92400e;">
+        <strong style="font-family:'Clash Display',sans-serif;display:block;margin-bottom:4px;">✦ Notre engagement</strong>
+        Chaque produit est testé et fonctionnel. En cas de problème, le vendeur est disponible sur WhatsApp pour vous accompagner.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Contact modal -->
+<div class="overlay" id="contactOverlay">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <button class="modal-close-btn" id="contactClose"><i class="fas fa-xmark"></i></button>
+    <div class="modal-body" style="padding:22px 20px 26px;">
+      <div style="font-family:'Clash Display',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:5px;">Contacter le vendeur</div>
+      <p style="font-size:.84rem;color:var(--muted);margin-bottom:18px;line-height:1.5;">Disponible pour toute question avant ou après votre achat.</p>
+      <div style="display:flex;flex-direction:column;gap:10px;" id="contactItems"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Add product modal -->
+<div class="overlay" id="addOverlay">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <button class="modal-close-btn" id="addClose"><i class="fas fa-xmark"></i></button>
+    <div class="add-modal-body">
+      <div style="font-family:'Clash Display',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:16px;">Ajouter un produit</div>
+      <div style="font-size:.76rem;font-weight:600;color:var(--muted);margin-bottom:7px;">Icône</div>
+      <div class="emoji-pick" id="emojiPick">
+        <div class="ep on" data-em="🛡️">🛡️</div><div class="ep" data-em="🎬">🎬</div>
+        <div class="ep" data-em="🤖">🤖</div><div class="ep" data-em="🎮">🎮</div>
+        <div class="ep" data-em="🔑">🔑</div><div class="ep" data-em="📚">📚</div>
+        <div class="ep" data-em="🎵">🎵</div><div class="ep" data-em="💻">💻</div>
+        <div class="ep" data-em="⚡">⚡</div><div class="ep" data-em="🌐">🌐</div>
+      </div>
+      <div class="field"><label>Nom du produit *</label><input type="text" id="pName" placeholder="VPN Premium 1 mois" maxlength="60"></div>
+      <div class="field"><label>Description</label><textarea id="pDesc" rows="3" placeholder="Accès illimité, 50+ pays...&#10;&#10;✔️ Compatible iOS, Android, PC&#10;✔️ Activation rapide"></textarea></div>
+      <div class="field-row">
+        <div class="field" style="margin-bottom:0"><label>Prix (FCFA) *</label><input type="number" id="pPrice" placeholder="3500" min="0"></div>
+        <div class="field" style="margin-bottom:0"><label>Ancien prix (promo)</label><input type="number" id="pOld" placeholder="5000" min="0"></div>
+      </div>
+      <div class="field" style="margin-top:11px"><label>Catégorie</label>
+        <select id="pCat">
+          <option value="vpn">🛡️ VPN & Sécurité</option>
+          <option value="streaming">🎬 Streaming</option>
+          <option value="ai">🤖 IA & Outils</option>
+          <option value="gaming">🎮 Gaming</option>
+          <option value="software">🔑 Logiciels</option>
+          <option value="ebooks">📚 E-books</option>
+          <option value="music">🎵 Musique</option>
+          <option value="other">🌟 Autre</option>
+        </select>
+      </div>
+      <button class="btn-full" id="btnAddProd"><i class="fas fa-plus"></i> Ajouter le produit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FIREBASE + LOGIC ══ -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getDatabase, ref, get, set, push, remove, onValue }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const app = initializeApp({
+  apiKey:"AIzaSyCd4kkoi36uqGeGnQ__f_Ddj3awpZ3W5LQ",
+  authDomain:"jjnfnnd-78039.firebaseapp.com",
+  databaseURL:"https://jjnfnnd-78039-default-rtdb.firebaseio.com",
+  projectId:"jjnfnnd-78039",
+  storageBucket:"jjnfnnd-78039.firebasestorage.app",
+  messagingSenderId:"240273882398",
+  appId:"1:240273882398:web:bbeed702d538063be71d0f"
+});
+const auth = getAuth(app);
+const db   = getDatabase(app);
+
+const params   = new URLSearchParams(location.search);
+const slug     = params.get('slug') || '';
+const isManage = params.get('manage') === '1';
+
+const G = id => document.getElementById(id);
+window._slug = slug;
+
+let shopData = null, allProds = {}, currentUser = null, isOwner = false;
+let activeCat = 'all', activeSearch = '', promoDiscount = 0;
+
+/* Theme map */
+const TC = {
+  orange:{theme:'#ff4d00',h:'#cc3d00',bg:'rgba(255,77,0,.08)',cover:'linear-gradient(135deg,#a82900,#ff4d00)'},
+  purple:{theme:'#7c3aed',h:'#5a2dc9',bg:'rgba(124,58,237,.08)',cover:'linear-gradient(135deg,#3b0a82,#7c3aed)'},
+  green: {theme:'#059669',h:'#047857',bg:'rgba(5,150,105,.08)',cover:'linear-gradient(135deg,#02442f,#059669)'},
+  gold:  {theme:'#d97706',h:'#b45309',bg:'rgba(217,119,6,.08)',cover:'linear-gradient(135deg,#5a2d00,#d97706)'},
+  blue:  {theme:'#2563eb',h:'#1d4ed8',bg:'rgba(37,99,235,.08)',cover:'linear-gradient(135deg,#0a1b5c,#2563eb)'},
+  pink:  {theme:'#db2777',h:'#be185d',bg:'rgba(219,39,119,.08)',cover:'linear-gradient(135deg,#5c0028,#db2777)'},
+};
+const CAT = {vpn:'VPN',streaming:'Streaming',ai:'IA & Outils',gaming:'Gaming',software:'Logiciels',ebooks:'E-books',music:'Musique',mixed:'Multi',other:'Autre'};
+const CATI= {vpn:'🛡️',streaming:'🎬',ai:'🤖',gaming:'🎮',software:'🔑',ebooks:'📚',music:'🎵',other:'📦'};
+
+function applyTheme(t){
+  const c=TC[t]||TC.orange;
+  document.documentElement.style.setProperty('--theme',c.theme);
+  document.documentElement.style.setProperty('--theme-h',c.h);
+  document.documentElement.style.setProperty('--theme-bg',c.bg);
+  document.documentElement.style.setProperty('--theme-border',c.bg.replace('.08','0.22'));
+  window._themeCover = c.cover;
+}
+
+/* Toast */
+window.showToast = function(msg){
+  const t=G('toastEl');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2600);
+};
+
+/* Auth */
+onAuthStateChanged(auth, u=>{
+  currentUser=u;
+  if(shopData) checkOwner();
+});
+
+function checkOwner(){
+  if(!shopData||!currentUser)return;
+  if(shopData.ownerId===currentUser.uid||isManage){
+    isOwner=true;
+    G('mgrBar').classList.add('show');
+    renderProds();
+  }
+}
+
+/* ── LOAD SHOP ── */
+async function loadShop(){
+  if(!slug){G('heroName').textContent='Aucun slug fourni.';return;}
+  const snap=await get(ref(db,`shops/${slug}`));
+  if(!snap.exists()){G('heroName').textContent='Boutique introuvable.';return;}
+  shopData=snap.val();
+  window._shopData=shopData;
+  applyTheme(shopData.theme);
+
+  document.title=`${shopData.name} — AnxHub Market`;
+  G('navAv').textContent=shopData.ownerAvatar||'🦁';
+  G('navName').textContent=shopData.name;
+  G('navSlug').textContent=slug;
+  G('heroAv').textContent=shopData.ownerAvatar||'🦁';
+  G('heroName').textContent=shopData.name;
+  G('heroDesc').textContent=shopData.desc||`Boutique digitale par ${shopData.ownerName||'ce vendeur'}`;
+  G('hViews').textContent=(shopData.views||0).toLocaleString('fr');
+  G('hProds').textContent=shopData.products||0;
+  G('hSales').textContent=shopData.sales||0;
+  G('hRating').textContent=shopData.rating?shopData.rating.toFixed(1):'—';
+  G('tagCat').textContent=CAT[shopData.cat||'mixed']||'Digital';
+  if(shopData.verified)G('tagVerified').style.display='inline-flex';
+  if(!shopData.active){
+    G('tagOnline').textContent='Hors ligne';
+    G('tagOnline').style.background='#f4f4f5';
+    G('tagOnline').style.color='var(--muted)';
+  }
+  window._phone=(shopData.phone||'').replace(/\D/g,'');
+
+  // Buttons
+  G('navWaBtn').onclick=()=>orderWa('');
+  G('toggleLabel').textContent=shopData.active?'Mettre hors ligne':'Mettre en ligne';
+
+  // About modal
+  G('aboutAv').textContent=shopData.ownerAvatar||'🦁';
+  G('aboutName').textContent=shopData.name;
+  G('aboutRole').textContent=`Vendeur digital · AnxHub Market`;
+  G('aboutBio').textContent=shopData.desc||'Boutique de produits numériques.';
+
+  // Contact
+  const phone=shopData.phone||'';
+  G('contactItems').innerHTML=phone?`
+    <a href="https://wa.me/${phone.replace(/\D/g,'')}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:13px;text-decoration:none;color:var(--text);background:#FAFAFA;border:1px solid var(--border);border-radius:12px;padding:13px 15px;transition:.18s;">
+      <span style="font-size:1.2rem;">💬</span>
+      <div><div style="font-size:.68rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);">WhatsApp</div><div style="font-size:.88rem;font-weight:500;">${phone}</div></div>
+    </a>
+  `:
+  `<div style="font-size:.84rem;color:var(--muted);">Aucun contact renseigné par le vendeur.</div>`;
+
+  // Increment view
+  set(ref(db,`shops/${slug}/views`),(shopData.views||0)+1).catch(()=>{});
+
+  // Live products
+  onValue(ref(db,`products/${slug}`),snap=>{
+    allProds={};
+    if(snap.exists())snap.forEach(c=>{allProds[c.key]=c.val();});
+    G('hProds').textContent=Object.keys(allProds).length;
+    G('secCount').textContent=Object.keys(allProds).length+' produit(s)';
+    renderProds();
+    // Also re-render if on product page
+    if(window._ppProd){
+      const updated=allProds[window._ppProd._id];
+      if(updated)window._ppProd={...updated,_id:window._ppProd._id};
+    }
+  });
+
+  renderReviews();
+  checkOwner();
+}
+
+/* ── RENDER PRODUCTS ── */
+function renderProds(){
+  let entries=Object.entries(allProds);
+  if(activeCat!=='all') entries=entries.filter(([,p])=>p.cat===activeCat);
+  if(activeSearch) entries=entries.filter(([,p])=>p.name?.toLowerCase().includes(activeSearch));
+  G('secCount').textContent=entries.length+' produit(s)';
+
+  if(!entries.length){
+    G('prodGrid').innerHTML=`<div class="empty"><div class="empty-ic">${activeCat==='all'?'📭':'🔍'}</div><div class="empty-t">${activeCat==='all'?'Aucun produit pour l\'instant':'Aucun résultat'}</div>${isOwner?'<div class="empty-s">Ajoute ton premier produit !</div>':''}</div>`;
+    return;
+  }
+
+  const cover=window._themeCover||'linear-gradient(135deg,#a82900,#ff4d00)';
+  G('prodGrid').innerHTML=entries.map(([id,p])=>{
+    const promo=p.oldPrice&&p.oldPrice>p.price?Math.round((1-p.price/p.oldPrice)*100):0;
+    const finalPrice=promoDiscount?Math.round(p.price*(1-promoDiscount/100)):p.price;
+    return `<div class="card" data-id="${id}" data-slug="${slug}">
+      <div class="card-cover">
+        <div class="card-cover-inner" style="background:${cover}">
+          <div class="card-cover-pattern"></div>
+          <div class="card-cover-logo">
+            <div class="card-cover-icon">${p.emoji||'📦'}</div>
+            <div class="card-cover-tag">${CAT[p.cat]||'Digital'}</div>
+          </div>
+        </div>
+        <span class="card-badge">${CATI[p.cat]||'📦'} ${CAT[p.cat]||'Autre'}</span>
+        ${promo?`<span class="card-disc">-${promo}%</span>`:''}
+        ${isOwner?`<button class="card-del owner" onclick="event.stopPropagation();deleteProd('${id}','${(p.name||'').replace(/'/g,"\\'")}')"><i class="fas fa-trash"></i></button>`:''}
+      </div>
+      <div class="card-body">
+        <div class="card-subtag">${p.cat?.toUpperCase()||'DIGITAL'} · ${p.isNew?'NOUVEAU':'DISPONIBLE'}</div>
+        <div class="card-title">${p.name||'Produit'}</div>
+        <div class="card-footer">
+          <div class="price-row">
+            <div class="price-block">
+              <span class="price-new">${finalPrice.toLocaleString('fr')} FCFA</span>
+              ${p.oldPrice?`<span class="price-old">${Number(p.oldPrice).toLocaleString('fr')}</span>`:''}
+            </div>
+            <button class="btn-details" onclick="event.stopPropagation();openProdModal('${id}')">Détails →</button>
+          </div>
+          <button class="btn-buy" onclick="event.stopPropagation();orderWa('${(p.name||'').replace(/'/g,"\\'")} — ${finalPrice.toLocaleString('fr')} FCFA')">
+            <i class="fab fa-whatsapp"></i> Commander
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Click on card → product page
+  G('prodGrid').querySelectorAll('.card').forEach(card=>{
+    card.addEventListener('click',e=>{
+      if(e.target.closest('.btn-buy')||e.target.closest('.btn-details')||e.target.closest('.card-del'))return;
+      const id=card.dataset.id;
+      const p=allProds[id];
+      if(p) window.location.hash='prod/'+id;
+    });
+  });
+}
+
+/* ── OPEN PRODUCT MODAL (quick view) ── */
+window.openProdModal=function(id){
+  const p=allProds[id];if(!p)return;
+  const promo=p.oldPrice&&p.oldPrice>p.price?Math.round((1-p.price/p.oldPrice)*100):0;
+  const finalPrice=promoDiscount?Math.round(p.price*(1-promoDiscount/100)):p.price;
+  const cover=window._themeCover||'linear-gradient(135deg,#a82900,#ff4d00)';
+  G('mBanner').style.background=cover;
+  G('mBannerIcon').textContent=p.emoji||'📦';
+  G('mBannerName').textContent=CAT[p.cat]||'Digital';
+  G('mDisc').textContent=promo?`-${promo}%`:'';
+  G('mDisc').style.display=promo?'':'none';
+  G('mTag').textContent=p.cat?.toUpperCase()||'DIGITAL';
+  G('mTitle').textContent=p.name||'';
+  G('mPriceNew').textContent=finalPrice.toLocaleString('fr')+' FCFA';
+  G('mPriceOld').textContent=p.oldPrice?Number(p.oldPrice).toLocaleString('fr')+' FCFA':'';
+  G('mDesc').textContent=p.desc||'Aucune description fournie.';
+  G('mBuyBtn').onclick=()=>orderWa(`${p.name||''} — ${finalPrice.toLocaleString('fr')} FCFA`);
+  G('prodOverlay').classList.add('open');
+};
+
+/* ── PRODUCT PAGE (hash routing) ── */
+window.renderProductPage=function(id){
+  const p=allProds[id];
+  if(!p){window.showToast('Produit introuvable.');return;}
+  window._ppProd={...p,_id:id};
+  const promo=p.oldPrice&&p.oldPrice>p.price?Math.round((1-p.price/p.oldPrice)*100):0;
+  const finalPrice=promoDiscount?Math.round(p.price*(1-promoDiscount/100)):p.price;
+  const cover=window._themeCover||'linear-gradient(135deg,#a82900,#ff4d00)';
+  document.title=`${p.name} — ${shopData?.name||'Boutique'}`;
+  G('ppTopTitle').textContent=p.name||'Produit';
+  G('ppHero').style.background=cover;
+  G('ppHeroIcon').textContent=p.emoji||'📦';
+  G('ppHeroName').textContent=CAT[p.cat]||'Digital';
+  G('ppDisc').textContent=promo?`-${promo}%`:'';
+  G('ppDisc').style.display=promo?'':'none';
+  G('ppTag').textContent=(p.cat||'').toUpperCase()||'DIGITAL';
+  G('ppTitle').textContent=p.name||'';
+  G('ppPriceNew').textContent=finalPrice.toLocaleString('fr')+' FCFA';
+  G('ppPriceOld').textContent=p.oldPrice?Number(p.oldPrice).toLocaleString('fr')+' FCFA':'';
+  G('ppSavings').textContent=p.oldPrice?`Économisez ${(Number(p.oldPrice)-finalPrice).toLocaleString('fr')} FCFA`:'';
+  G('ppSavings').style.display=p.oldPrice?'':'none';
+  G('ppDesc').textContent=p.desc||'Aucune description disponible.';
+  G('ppWaLink').onclick=()=>orderWa(p.name||'');
+  G('ppBuyBtn').onclick=()=>orderWa(`${p.name||''} — ${finalPrice.toLocaleString('fr')} FCFA`);
+
+  // Other products
+  const others=Object.entries(allProds).filter(([i])=>i!==id).slice(0,4);
+  G('ppOtherGrid').innerHTML=others.map(([oid,op])=>`
+    <div class="pp-other-item" onclick="window.location.hash='prod/${oid}'">
+      <div class="pp-other-icon" style="background:${cover}">${op.emoji||'📦'}</div>
+      <div style="flex:1;min-width:0;">
+        <div class="pp-other-name">${op.name||'Produit'}</div>
+        <div class="pp-other-price">${Number(op.price||0).toLocaleString('fr')} FCFA ${op.oldPrice?`<span style="text-decoration:line-through;opacity:.4">${Number(op.oldPrice).toLocaleString('fr')}</span>`:''}</div>
+      </div>
+      <span class="pp-other-arr">›</span>
+    </div>`).join('');
+
+  G('shopView').style.display='none';
+  G('productPage').style.display='block';
+  window.scrollTo(0,0);
+};
+
+/* ── HASH ROUTING ── */
+function route(){
+  const m=window.location.hash.match(/^#prod\/(.+)$/);
+  if(m&&shopData){window.renderProductPage(m[1]);return;}
+  G('shopView').style.display='block';
+  G('productPage').style.display='none';
+  document.title=shopData?`${shopData.name} — AnxHub Market`:'Boutique — AnxHub Market';
+}
+window.addEventListener('hashchange',route);
+
+/* ── DELETE PRODUCT ── */
+window.deleteProd=async(id,name)=>{
+  if(!isOwner)return;
+  if(!confirm(`Supprimer "${name}" ?`))return;
+  await remove(ref(db,`products/${slug}/${id}`));
+  await set(ref(db,`shops/${slug}/products`),Math.max(0,Object.keys(allProds).length-1));
+  window.showToast(`"${name}" supprimé.`);
+};
+
+/* ── TOGGLE SHOP ── */
+window.toggleShop=async()=>{
+  if(!isOwner||!shopData)return;
+  const next=!shopData.active;
+  await set(ref(db,`shops/${slug}/active`),next);
+  shopData.active=next;
+  G('toggleLabel').textContent=next?'Mettre hors ligne':'Mettre en ligne';
+  window.showToast(next?'Boutique mise en ligne !':'Boutique mise hors ligne.');
+};
+
+/* ── PROMO ── */
+window.applyPromo=async()=>{
+  const code=(G('promoCode')?.value||'').toUpperCase().trim();
+  const msg=G('promoMsg');
+  msg.style.display='none';
+  if(!code){window.showToast('Saisis un code.');return;}
+  const ownerUid=shopData?.ownerId;
+  if(!ownerUid)return;
+  const snap=await get(ref(db,`promos/${ownerUid}`));
+  let found=false;
+  if(snap.exists()){
+    snap.forEach(c=>{
+      const p=c.val();
+      if(p.code!==code)return;
+      if(p.shopSlug!=='all'&&p.shopSlug!==slug)return;
+      if(p.expiry&&new Date(p.expiry)<new Date()){msg.textContent='❌ Code expiré.';msg.className='promo-msg promo-fail';msg.style.display='block';return;}
+      if(p.limit&&(p.usedCount||0)>=p.limit){msg.textContent='❌ Code épuisé.';msg.className='promo-msg promo-fail';msg.style.display='block';return;}
+      promoDiscount=p.discount;
+      msg.textContent=`✅ Code appliqué ! -${p.discount}% sur tous les prix.`;
+      msg.className='promo-msg promo-ok';msg.style.display='block';
+      renderProds();found=true;
+    });
+  }
+  if(!found&&!promoDiscount){msg.textContent='❌ Code invalide ou inactif.';msg.className='promo-msg promo-fail';msg.style.display='block';}
+};
+
+/* ── ADD PRODUCT ── */
+window.openAddModal=()=>{if(isOwner)G('addOverlay').classList.add('open');};
+G('btnAddProd').addEventListener('click',async()=>{
+  if(!isOwner||!currentUser)return;
+  const name=(G('pName')?.value||'').trim();
+  const desc=(G('pDesc')?.value||'').trim();
+  const price=Number(G('pPrice')?.value||0);
+  const old=Number(G('pOld')?.value||0);
+  const cat=G('pCat')?.value||'other';
+  const emoji=document.querySelector('.ep.on')?.dataset.em||'📦';
+  if(!name){window.showToast('Nom requis.');return;}
+  if(!price){window.showToast('Prix requis.');return;}
+  const btn=G('btnAddProd');
+  btn.disabled=true;btn.__h=btn.innerHTML;btn.innerHTML='<div class="spinner"></div>';
+  try{
+    const nr=push(ref(db,`products/${slug}`));
+    await set(nr,{name,desc,price,oldPrice:old||null,cat,emoji,active:true,isNew:true,createdAt:Date.now()});
+    await set(ref(db,`shops/${slug}/products`),Object.keys(allProds).length+1);
+    G('addOverlay').classList.remove('open');
+    ['pName','pDesc','pPrice','pOld'].forEach(id=>{const el=G(id);if(el)el.value='';});
+    window.showToast(`"${name}" ajouté !`);
+  }catch(e){window.showToast('Erreur : '+e.message);}
+  btn.disabled=false;btn.innerHTML=btn.__h;
+});
+
+/* ── WHATSAPP ── */
+window.orderWa=function(info){
+  const phone=window._phone||'';
+  const sname=shopData?.name||'cette boutique';
+  const msg=info
+    ?`Bonjour ! Je souhaite commander : *${info}* — Boutique *${sname}* (anxhub.market/${slug})`
+    :`Bonjour ! Je visite votre boutique *${sname}* sur AnxHub Market. Pouvez-vous m'aider ?`;
+  window.open(phone?`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`:`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
+};
+
+/* ── SHARE ── */
+window.shareShop=function(){
+  const url=`${location.origin}${location.pathname}?slug=${slug}`;
+  if(navigator.share)navigator.share({title:shopData?.name||'Boutique',url});
+  else navigator.clipboard.writeText(url).then(()=>window.showToast('Lien copié !'));
+};
+window.sharePP=function(){
+  const url=window.location.href;
+  if(navigator.share)navigator.share({title:document.title,url});
+  else navigator.clipboard.writeText(url).then(()=>window.showToast('Lien copié !'));
+};
+
+/* ── REVIEWS ── */
+function renderReviews(){
+  const reviews=[
+    {text:'Service ultra rapide ! Accès reçu en moins de 5 minutes. Je recommande vraiment !',author:'Moussa D.',loc:'🇧🇫',stars:5,color:'#ff4d00'},
+    {text:'Très fiable, déjà mon 3ème achat ici. Les meilleurs prix du marché.',author:'Awa K.',loc:'🇨🇮',stars:5,color:'#7c3aed'},
+    {text:'Bon vendeur, réactif sur WhatsApp. Livraison rapide et produit fonctionnel.',author:'Ibrahim S.',loc:'🇸🇳',stars:4,color:'#059669'},
+    {text:'Qualité constante. Je suis cliente régulière et je ne suis jamais déçue !',author:'Fatou M.',loc:'🇲🇱',stars:5,color:'#d97706'},
+  ];
+  const avg=4.9;
+  G('revScore').textContent=avg.toFixed(1);
+  G('revCount').textContent=`${reviews.length} avis vérifiés`;
+  G('revStars').innerHTML=Array.from({length:5},()=>'<i class="fas fa-star"></i>').join('');
+  G('revGrid').innerHTML=reviews.map(r=>`
+    <div class="rev-card">
+      <div class="rc-stars">${Array.from({length:r.stars},()=>'<i class="fas fa-star"></i>').join('')}</div>
+      <div class="rc-text">"${r.text}"</div>
+      <div class="rc-author">
+        <div class="rc-av" style="background:${r.color}">${r.author[0]}</div>
+        <div><div class="rc-name">${r.author} ${r.loc}</div><div class="rc-date">Récemment</div></div>
+      </div>
+    </div>`).join('');
+}
+
+loadShop();
+</script>
+
+<script>
+/* ── NON-MODULE UI ── */
+
+// Filter
+window.filterCat=function(cat,el){
+  document.querySelectorAll('.fchip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  window._activeCat=cat;
+  // Force rerender via global
+  if(typeof renderProds==='function')renderProds();
+  else{
+    // fallback: just set activeCat and renderProds will pick it up on next onValue
+    window._activeCat=cat;
+  }
+};
+window.filterSearch=function(val){
+  window._activeSearch=val.toLowerCase();
+};
+
+// Modals
+const closers=[
+  ['prodModalClose','prodOverlay'],
+  ['aboutClose','aboutOverlay'],
+  ['contactClose','contactOverlay'],
+  ['addClose','addOverlay'],
+];
+closers.forEach(([btnId,ovId])=>{
+  document.getElementById(btnId)?.addEventListener('click',()=>document.getElementById(ovId)?.classList.remove('open'));
+  document.getElementById(ovId)?.addEventListener('click',e=>{if(e.target===document.getElementById(ovId))document.getElementById(ovId).classList.remove('open');});
+});
+document.getElementById('btnAbout')?.addEventListener('click',()=>document.getElementById('aboutOverlay')?.classList.add('open'));
+document.getElementById('btnContact')?.addEventListener('click',()=>document.getElementById('contactOverlay')?.classList.add('open'));
+
+// PP back
+document.getElementById('ppBack')?.addEventListener('click',()=>{
+  history.pushState('',document.title,window.location.pathname+window.location.search);
+  document.getElementById('shopView').style.display='block';
+  document.getElementById('productPage').style.display='none';
+  document.title=window._shopData?`${window._shopData.name} — AnxHub Market`:'Boutique';
+});
+document.getElementById('ppShareBtn')?.addEventListener('click',()=>window.sharePP&&window.sharePP());
+
+// Emoji pick
+document.querySelectorAll('.ep').forEach(el=>{
+  el.addEventListener('click',()=>{
+    document.querySelectorAll('.ep').forEach(e=>e.classList.remove('on'));
+    el.classList.add('on');
+  });
+});
+
+// Promo input uppercase
+document.getElementById('promoCode')?.addEventListener('input',function(){this.value=this.value.toUpperCase();});
+
+// ESC
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('open'));
+  }
+});
+
+// Patch filterCat to work with module-scoped renderProds
+const origFilterCat=window.filterCat;
+window.filterCat=function(cat,el){
+  document.querySelectorAll('.fchip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  // post message to module
+  window.dispatchEvent(new CustomEvent('filterCat',{detail:cat}));
+};
+window.filterSearch=function(val){
+  window.dispatchEvent(new CustomEvent('filterSearch',{detail:val.toLowerCase()}));
+};
+</script>
+
+<!-- Link filter events into module scope -->
+<script type="module">
+window.addEventListener('filterCat',e=>{
+  window._activeCat=e.detail;
+  // trigger re-render by dispatching to the existing render function
+  if(window._renderProds) window._renderProds();
+});
+window.addEventListener('filterSearch',e=>{
+  window._activeSearch=e.detail;
+  if(window._renderProds) window._renderProds();
+});
+</script>
+</body>
+</html>
