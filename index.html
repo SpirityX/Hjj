@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AnxHub Market — Connexion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --white:#ffffff;
+  --gray-50:#f9fafb;
+  --gray-100:#f3f4f6;
+  --gray-200:#e5e7eb;
+  --gray-300:#d1d5db;
+  --gray-400:#9ca3af;
+  --gray-500:#6b7280;
+  --gray-600:#4b5563;
+  --gray-700:#374151;
+  --gray-800:#1f2937;
+  --gray-900:#111827;
+  --accent:#ff4d00;
+  --accent-light:#fff4f0;
+  --accent-mid:rgba(255,77,0,.12);
+  --green:#059669;
+  --green-light:#ecfdf5;
+  --red:#dc2626;
+  --gold:#d97706;
+  --radius:12px;
+  --radius-sm:8px;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --shadow:0 4px 16px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.04);
+  --shadow-lg:0 20px 48px rgba(0,0,0,.1),0 8px 16px rgba(0,0,0,.04);
+}
+html,body{height:100%;font-family:'Geist',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+body{background:var(--gray-50);color:var(--gray-900);}
+
+/* ── LAYOUT ── */
+.shell{display:grid;grid-template-columns:480px 1fr;height:100dvh;overflow:hidden;}
+
+/* ── LEFT ── */
+.lp{
+  background:var(--gray-900);
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+  padding:32px 40px;
+}
+.lp-dots{
+  position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,.06) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+.lp-glow{
+  position:absolute;
+  width:600px;height:600px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(255,77,0,.18) 0%,transparent 65%);
+  top:-200px;right:-200px;
+  pointer-events:none;
+}
+.lp-glow2{
+  position:absolute;
+  width:400px;height:400px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(255,77,0,.08) 0%,transparent 65%);
+  bottom:-100px;left:-100px;
+  pointer-events:none;
+}
+.lp-inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;}
+
+.brand{display:flex;align-items:center;gap:10px;}
+.brand-mark{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:.85rem;
+  box-shadow:0 0 0 3px rgba(255,77,0,.25);
+}
+.brand-name{font-family:'DM Serif Display',serif;font-size:1.1rem;color:#fff;letter-spacing:-.01em;}
+
+.lp-content{flex:1;display:flex;flex-direction:column;justify-content:center;gap:40px;}
+
+.lp-headline{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(1.8rem,2.6vw,2.4rem);
+  color:#fff;line-height:1.15;
+  letter-spacing:-.02em;
+}
+.lp-headline em{font-style:italic;color:rgba(255,255,255,.5);}
+
+/* Steps */
+.steps-track{display:flex;flex-direction:column;gap:0;}
+.step{display:flex;align-items:flex-start;gap:16px;padding:14px 0;position:relative;}
+.step:not(:last-child)::after{
+  content:'';position:absolute;left:15px;top:48px;width:1px;
+  bottom:-14px;background:rgba(255,255,255,.08);
+}
+.step-circle{
+  width:32px;height:32px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.76rem;font-weight:600;transition:.35s;
+}
+.step-circle.done{background:rgba(5,150,105,.2);color:#34d399;border:1.5px solid rgba(52,211,153,.3);}
+.step-circle.curr{background:rgba(255,77,0,.2);color:#ff7a3d;border:1.5px solid rgba(255,77,0,.35);}
+.step-circle.next{background:rgba(255,255,255,.05);color:rgba(255,255,255,.25);border:1.5px solid rgba(255,255,255,.08);}
+.step-text{padding-top:5px;}
+.step-title{font-size:.87rem;font-weight:500;color:#fff;margin-bottom:2px;transition:.35s;}
+.step-sub{font-size:.74rem;color:rgba(255,255,255,.3);}
+.step.next .step-title{color:rgba(255,255,255,.3);}
+
+/* Testimonial */
+.testimonial{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;padding:20px 22px;
+}
+.test-quote{font-size:.88rem;color:rgba(255,255,255,.65);line-height:1.7;margin-bottom:14px;font-style:italic;}
+.test-author{display:flex;align-items:center;gap:10px;}
+.test-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#ff8c5a);display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+.test-name{font-size:.8rem;font-weight:600;color:#fff;}
+.test-role{font-size:.72rem;color:rgba(255,255,255,.35);}
+.test-stars{margin-left:auto;display:flex;gap:2px;color:#f59e0b;font-size:.72rem;}
+
+.lp-stats{display:flex;gap:0;border-top:1px solid rgba(255,255,255,.07);padding-top:24px;}
+.lp-stat{flex:1;text-align:center;border-right:1px solid rgba(255,255,255,.07);}
+.lp-stat:last-child{border-right:none;}
+.lp-stat-val{font-family:'DM Serif Display',serif;font-size:1.5rem;color:#fff;}
+.lp-stat-lbl{font-size:.7rem;color:rgba(255,255,255,.32);margin-top:2px;}
+
+/* ── RIGHT ── */
+.rp{
+  background:var(--white);
+  display:flex;flex-direction:column;
+  overflow-y:auto;overflow-x:hidden;
+}
+.rp-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 48px;flex-shrink:0;
+}
+.rp-topbar .already{font-size:.83rem;color:var(--gray-500);}
+.rp-topbar .already a{color:var(--accent);font-weight:500;text-decoration:none;margin-left:4px;}
+.rp-topbar .already a:hover{text-decoration:underline;}
+
+.rp-body{
+  flex:1;display:flex;align-items:center;
+  padding:16px 48px 48px;
+}
+.form-sheet{width:100%;max-width:420px;margin:0 auto;}
+
+/* Progress */
+.progress{display:none;gap:6px;margin-bottom:36px;}
+.progress.show{display:flex;}
+.prog-seg{flex:1;height:2px;border-radius:2px;background:var(--gray-200);transition:.4s;}
+.prog-seg.done{background:var(--green);}
+.prog-seg.active{background:var(--accent);}
+
+/* Panels */
+.panel{display:none;}
+.panel.on{display:block;animation:fadeSlide .3s ease;}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+/* Form headings */
+.form-eyebrow{
+  font-size:.72rem;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:8px;
+}
+.form-title{
+  font-family:'DM Serif Display',serif;
+  font-size:1.9rem;color:var(--gray-900);
+  letter-spacing:-.02em;line-height:1.15;
+  margin-bottom:6px;
+}
+.form-sub{font-size:.86rem;color:var(--gray-500);line-height:1.6;margin-bottom:28px;}
+
+/* Google btn */
+.btn-google{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:11px 16px;border-radius:var(--radius);border:1.5px solid var(--gray-200);
+  background:var(--white);font-size:.86rem;font-weight:500;color:var(--gray-700);
+  cursor:pointer;transition:all .2s;margin-bottom:20px;font-family:'Geist',sans-serif;
+}
+.btn-google:hover{border-color:var(--gray-300);background:var(--gray-50);box-shadow:var(--shadow-sm);}
+.g-icon{width:18px;height:18px;flex-shrink:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23FFC107' d='M43.6 20H24v8h11.3C33.6 33.5 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 20-8 20-20 0-1.3-.1-2.7-.4-4z'/%3E%3Cpath fill='%23FF3D00' d='M6.3 14.7l6.6 4.8C14.6 16 19 13 24 13c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.4 6.3 14.7z'/%3E%3Cpath fill='%234CAF50' d='M24 44c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.3 35.3 26.8 36 24 36c-5.2 0-9.6-3.5-11.2-8.2l-6.6 5.1C9.7 39.6 16.3 44 24 44z'/%3E%3Cpath fill='%231976D2' d='M43.6 20H24v8h11.3c-.8 2.2-2.2 4.1-4.1 5.5l6.2 5.2C41.2 35.3 44 30 44 24c0-1.3-.1-2.7-.4-4z'/%3E%3C/svg%3E") center/contain no-repeat;}
+
+/* Divider */
+.divider{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--gray-200);}
+.divider span{font-size:.75rem;color:var(--gray-400);}
+
+/* Fields */
+.field-stack{display:flex;flex-direction:column;gap:14px;margin-bottom:18px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.field{display:flex;flex-direction:column;gap:5px;}
+.field-label{font-size:.78rem;font-weight:500;color:var(--gray-700);}
+.field-wrap{position:relative;}
+.field-ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:.78rem;color:var(--gray-400);pointer-events:none;z-index:1;transition:color .2s;}
+.field-wrap:focus-within .field-ico{color:var(--accent);}
+.field-input{
+  width:100%;padding:10px 12px 10px 36px;
+  border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);
+  background:var(--white);color:var(--gray-900);
+  font-family:'Geist',sans-serif;font-size:.87rem;
+  outline:none;transition:all .2s;
+  appearance:none;-webkit-appearance:none;
+}
+.field-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,77,0,.1);}
+.field-input.error{border-color:var(--red);}
+.field-input-plain{padding-left:12px;}
+.field-select{padding-right:32px;cursor:pointer;}
+.field-sel-arr{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:.68rem;color:var(--gray-400);pointer-events:none;}
+.field-eye{position:absolute;right:11px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:.78rem;color:var(--gray-400);z-index:2;transition:color .2s;}
+.field-eye:hover{color:var(--accent);}
+.field-err{font-size:.72rem;color:var(--red);display:none;margin-top:2px;}
+.field-err.on{display:block;}
+
+/* Slug field */
+.slug-row{display:flex;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);overflow:hidden;transition:all .2s;}
+.slug-row:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,77,0,.1);}
+.slug-prefix{
+  padding:10px 10px 10px 12px;
+  font-size:.78rem;color:var(--gray-400);font-weight:500;
+  background:var(--gray-50);border-right:1.5px solid var(--gray-200);
+  white-space:nowrap;display:flex;align-items:center;flex-shrink:0;
+}
+.slug-input{
+  flex:1;padding:10px;border:none;background:transparent;
+  color:var(--gray-900);font-family:'Geist',sans-serif;
+  font-size:.87rem;font-weight:500;outline:none;
+}
+.slug-state{padding:0 10px;display:flex;align-items:center;font-size:.72rem;font-weight:600;flex-shrink:0;gap:3px;transition:.2s;}
+.slug-state.avail{color:var(--green);}
+.slug-state.taken{color:var(--red);}
+.slug-state.chk{color:var(--gray-400);}
+
+/* Password strength */
+.pw-strength{display:none;margin-top:6px;}
+.pw-strength.show{display:block;}
+.pw-bars{display:flex;gap:3px;margin-bottom:4px;}
+.pw-bar{flex:1;height:2px;border-radius:2px;background:var(--gray-200);transition:.3s;}
+.pw-bar.weak{background:var(--red);}
+.pw-bar.fair{background:var(--gold);}
+.pw-bar.strong{background:var(--green);}
+.pw-label{font-size:.7rem;color:var(--gray-400);}
+
+/* Avatar */
+.av-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+.av-opt{
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.15rem;border:1.5px solid var(--gray-200);
+  background:var(--gray-50);cursor:pointer;transition:all .2s;
+}
+.av-opt:hover{border-color:var(--accent);transform:scale(1.06);}
+.av-opt.on{border-color:var(--accent);background:var(--accent-light);box-shadow:0 0 0 3px rgba(255,77,0,.1);}
+
+/* Interest chips */
+.int-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px;}
+.int-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:6px 12px;border-radius:100px;
+  border:1.5px solid var(--gray-200);background:var(--gray-50);
+  font-size:.78rem;font-weight:500;color:var(--gray-600);
+  cursor:pointer;transition:all .2s;
+}
+.int-chip:hover{border-color:var(--accent);color:var(--accent);}
+.int-chip.on{border-color:var(--accent);color:var(--accent);background:var(--accent-light);}
+
+/* Checkbox */
+.check-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:20px;}
+.check-row input{width:15px;height:15px;flex-shrink:0;accent-color:var(--accent);margin-top:2px;cursor:pointer;}
+.check-row label{font-size:.8rem;color:var(--gray-500);line-height:1.5;cursor:pointer;}
+.check-row label a{color:var(--accent);text-decoration:none;font-weight:500;}
+
+/* Buttons */
+.btn{
+  width:100%;padding:12px;border-radius:var(--radius-sm);border:none;
+  font-family:'Geist',sans-serif;font-size:.9rem;font-weight:600;
+  cursor:pointer;transition:all .22s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-primary{
+  background:var(--gray-900);color:#fff;
+  box-shadow:0 1px 3px rgba(0,0,0,.15);
+}
+.btn-primary:hover{background:var(--gray-800);transform:translateY(-1px);box-shadow:var(--shadow);}
+.btn-primary:disabled{opacity:.55;pointer-events:none;}
+.btn-secondary{
+  background:var(--gray-100);color:var(--gray-700);
+  margin-top:10px;
+}
+.btn-secondary:hover{background:var(--gray-200);}
+
+/* Welcome */
+.welcome-wrap{text-align:center;padding:8px 0;}
+.w-badge{
+  width:72px;height:72px;border-radius:50%;margin:0 auto 20px;
+  background:var(--green-light);border:2px solid rgba(5,150,105,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.9rem;
+  animation:scaleIn .5s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes scaleIn{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+.w-title{font-family:'DM Serif Display',serif;font-size:1.7rem;color:var(--gray-900);margin-bottom:6px;letter-spacing:-.02em;}
+.w-sub{font-size:.86rem;color:var(--gray-500);line-height:1.65;margin-bottom:24px;}
+.perks{display:flex;flex-direction:column;gap:10px;margin-bottom:26px;text-align:left;}
+.perk{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;border-radius:var(--radius-sm);
+  background:var(--gray-50);border:1px solid var(--gray-200);
+}
+.perk-ic{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.82rem;flex-shrink:0;}
+.perk-title{font-size:.83rem;font-weight:600;color:var(--gray-800);}
+.perk-sub{font-size:.72rem;color:var(--gray-400);margin-top:1px;}
+
+/* Forgot modal */
+.overlay{position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.3);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:.25s;}
+.overlay.show{opacity:1;pointer-events:all;}
+.modal{background:#fff;border-radius:16px;padding:28px;width:min(380px,92vw);box-shadow:var(--shadow-lg);transform:scale(.95) translateY(8px);transition:.28s cubic-bezier(.4,0,.2,1);}
+.overlay.show .modal{transform:scale(1) translateY(0);}
+.modal-title{font-family:'DM Serif Display',serif;font-size:1.35rem;color:var(--gray-900);margin-bottom:5px;}
+.modal-sub{font-size:.83rem;color:var(--gray-500);margin-bottom:18px;}
+.modal-close{float:right;background:none;border:none;cursor:pointer;color:var(--gray-400);font-size:.9rem;margin-top:-2px;transition:.2s;}
+.modal-close:hover{color:var(--gray-700);}
+
+/* Toast */
+.toasts{position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
+.toast{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 16px;border-radius:var(--radius-sm);
+  font-size:.82rem;font-weight:500;
+  box-shadow:var(--shadow-lg);border:1px solid;
+  transform:translateX(110%);opacity:0;
+  transition:.32s cubic-bezier(.4,0,.2,1);
+  pointer-events:all;max-width:300px;
+  font-family:'Geist',sans-serif;
+}
+.toast.show{transform:translateX(0);opacity:1;}
+.toast-s{background:#ecfdf5;border-color:#a7f3d0;color:#065f46;}
+.toast-e{background:#fef2f2;border-color:#fecaca;color:#991b1b;}
+.toast-i{background:#eff6ff;border-color:#bfdbfe;color:#1e40af;}
+
+.spinner{width:17px;height:17px;border-radius:50%;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;animation:spin .6s linear infinite;flex-shrink:0;}
+.spinner-dark{border-color:rgba(0,0,0,.15);border-top-color:var(--gray-700);}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:820px){
+  .shell{grid-template-columns:1fr;height:auto;overflow:visible;}
+  .lp{display:none;}
+  .rp{min-height:100dvh;overflow-y:auto;}
+  .rp-body{padding:16px 24px 40px;align-items:flex-start;}
+  .rp-topbar{padding:14px 20px;}
+  .form-sheet{max-width:100%;}
+  .btn-google{padding:11px 12px;font-size:.82rem;}
+  .av-grid{gap:6px;}
+  .av-opt{width:40px;height:40px;}
+  .int-chips{gap:5px;}
+  .int-chip{padding:6px 10px;font-size:.75rem;}
+  .check-row label{font-size:.77rem;}
+  .perks{gap:8px;}
+  .perk{padding:10px 12px;}
+}
+@media(max-width:480px){
+  .rp-body{padding:12px 16px 36px;}
+  .rp-topbar{padding:12px 16px;}
+  .form-title{font-size:1.3rem;}
+  .field-row{grid-template-columns:1fr;}
+  .field-input{font-size:.84rem;padding:10px 11px 10px 33px;}
+  .btn{padding:12px;}
+  .btn-google{gap:8px;font-size:.8rem;}
+  .av-grid{gap:5px;}
+  .av-opt{width:36px;height:36px;border-radius:9px;font-size:1rem;}
+  .toast{max-width:calc(100vw - 32px);right:16px;top:16px;}
+  .overlay .modal{width:min(360px,96vw);padding:22px 18px;}
+}
+@media(max-width:360px){
+  .rp-body{padding:10px 12px 32px;}
+  .form-title{font-size:1.2rem;}
+  .av-opt{width:32px;height:32px;font-size:.9rem;}
+  .btn{font-size:.85rem;}
+}
+</style>
+</head>
+<body>
+<div class="toasts" id="toasts"></div>
+
+<!-- FORGOT MODAL -->
+<div class="overlay" id="forgotOverlay">
+  <div class="modal">
+    <button class="modal-close" id="forgotClose"><i class="fas fa-xmark"></i></button>
+    <div class="modal-title">Réinitialiser</div>
+    <div class="modal-sub">Saisis ton email. On t'envoie un lien immédiatement.</div>
+    <div class="field" style="margin-bottom:14px">
+      <div class="field-label">Email</div>
+      <div class="field-wrap">
+        <i class="fas fa-envelope field-ico"></i>
+        <input class="field-input" type="email" id="forgotEmail" placeholder="ton@email.com">
+      </div>
+    </div>
+    <button class="btn btn-primary" id="forgotBtn" style="margin-bottom:0">
+      <i class="fas fa-paper-plane"></i> Envoyer le lien
+    </button>
+  </div>
+</div>
+
+<div class="shell">
+  <!-- LEFT -->
+  <aside class="lp">
+    <div class="lp-dots"></div>
+    <div class="lp-glow"></div>
+    <div class="lp-glow2"></div>
+    <div class="lp-inner">
+      <a href="index.html" class="brand">
+        <div class="brand-mark"><i class="fas fa-store"></i></div>
+        <span class="brand-name">AnxHub Market</span>
+      </a>
+
+      <div class="lp-content">
+        <div class="lp-headline">
+          La boutique digitale<br>
+          <em>pensée pour l'Afrique.</em>
+        </div>
+
+        <div class="steps-track" id="stepsTrack">
+          <div class="step" id="st0">
+            <div class="step-circle curr" id="sc0">01</div>
+            <div class="step-text">
+              <div class="step-title">Créer ton compte</div>
+              <div class="step-sub">Email + mot de passe sécurisé</div>
+            </div>
+          </div>
+          <div class="step next" id="st1">
+            <div class="step-circle next" id="sc1">02</div>
+            <div class="step-text">
+              <div class="step-title">Compléter ton profil</div>
+              <div class="step-sub">Personnalise ton espace vendeur</div>
+            </div>
+          </div>
+          <div class="step next" id="st2">
+            <div class="step-circle next" id="sc2">03</div>
+            <div class="step-text">
+              <div class="step-title">Accéder au dashboard</div>
+              <div class="step-sub">Crée tes boutiques & vends</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <div class="test-quote">"En 3 semaines, j'ai généré plus de 200 000 FCFA grâce à ma boutique AnxHub. Le lien personnalisé inspire vraiment confiance."</div>
+          <div class="test-author">
+            <div class="test-av">🦁</div>
+            <div>
+              <div class="test-name">Kofi Diabaté</div>
+              <div class="test-role">Revendeur VPN & Streaming · Abidjan 🇨🇮</div>
+            </div>
+            <div class="test-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lp-stats">
+        <div class="lp-stat">
+          <div class="lp-stat-val">2 500+</div>
+          <div class="lp-stat-lbl">Vendeurs actifs</div>
+        </div>
+        <div class="lp-stat">
+          <div class="lp-stat-val">15M</div>
+          <div class="lp-stat-lbl">FCFA reversés</div>
+        </div>
+        <div class="lp-stat">
+          <div class="lp-stat-val">5 min</div>
+          <div class="lp-stat-lbl">Pour démarrer</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- RIGHT -->
+  <main class="rp">
+    <div class="rp-topbar">
+      <div></div>
+      <div class="already" id="topSwitch">
+        Déjà un compte ? <a href="#" id="switchLink">Se connecter</a>
+      </div>
+    </div>
+    <div class="rp-body">
+      <div class="form-sheet">
+        <div class="progress" id="progressBar">
+          <div class="prog-seg" id="p0"></div>
+          <div class="prog-seg" id="p1"></div>
+          <div class="prog-seg" id="p2"></div>
+        </div>
+
+        <!-- ── LOGIN ── -->
+        <div class="panel on" id="panelLogin">
+          <div class="form-eyebrow">Connexion</div>
+          <div class="form-title">Content de te revoir.</div>
+          <div class="form-sub">Accède à ton espace vendeur et tes boutiques.</div>
+
+          <button class="btn-google" id="gBtnLogin">
+            <div class="g-icon"></div> Continuer avec Google
+          </button>
+          <div class="divider"><span>ou avec email</span></div>
+
+          <div class="field-stack">
+            <div class="field">
+              <div class="field-label">Adresse email</div>
+              <div class="field-wrap">
+                <i class="fas fa-envelope field-ico"></i>
+                <input class="field-input" type="email" id="lEmail" placeholder="kofi@email.com" autocomplete="email">
+              </div>
+              <div class="field-err" id="lEmailErr"></div>
+            </div>
+            <div class="field">
+              <div class="field-label">Mot de passe</div>
+              <div class="field-wrap">
+                <i class="fas fa-lock field-ico"></i>
+                <input class="field-input" type="password" id="lPw" placeholder="••••••••" autocomplete="current-password">
+                <i class="fas fa-eye field-eye" id="lEye"></i>
+              </div>
+              <div class="field-err" id="lPwErr"></div>
+            </div>
+          </div>
+
+          <div style="text-align:right;margin:-8px 0 18px">
+            <a href="#" id="forgotLink" style="font-size:.78rem;color:var(--gray-400);text-decoration:none;">Mot de passe oublié ?</a>
+          </div>
+
+          <button class="btn btn-primary" id="btnLogin">
+            <i class="fas fa-arrow-right-to-bracket"></i> Se connecter
+          </button>
+          <div style="text-align:center;margin-top:14px;font-size:.8rem;color:var(--gray-400)">
+            Pas de compte ? <a href="#" id="toRegister" style="color:var(--accent);font-weight:500;text-decoration:none;">Créer mon compte</a>
+          </div>
+        </div>
+
+        <!-- ── REGISTER ── -->
+        <div class="panel" id="panelRegister">
+          <div class="form-eyebrow">Inscription</div>
+          <div class="form-title">Crée ton compte.</div>
+          <div class="form-sub">Gratuit · Aucune carte · Prêt en 5 minutes.</div>
+
+          <button class="btn-google" id="gBtnReg">
+            <div class="g-icon"></div> Continuer avec Google
+          </button>
+          <div class="divider"><span>ou avec email</span></div>
+
+          <div class="field-stack">
+            <div class="field">
+              <div class="field-label">Adresse email *</div>
+              <div class="field-wrap">
+                <i class="fas fa-envelope field-ico"></i>
+                <input class="field-input" type="email" id="rEmail" placeholder="kofi@email.com" autocomplete="email">
+              </div>
+              <div class="field-err" id="rEmailErr"></div>
+            </div>
+            <div class="field">
+              <div class="field-label">Mot de passe *</div>
+              <div class="field-wrap">
+                <i class="fas fa-lock field-ico"></i>
+                <input class="field-input" type="password" id="rPw" placeholder="Min. 8 caractères" autocomplete="new-password">
+                <i class="fas fa-eye field-eye" id="rEye"></i>
+              </div>
+              <div class="pw-strength" id="pwStrength">
+                <div class="pw-bars">
+                  <div class="pw-bar" id="pwb1"></div><div class="pw-bar" id="pwb2"></div>
+                  <div class="pw-bar" id="pwb3"></div><div class="pw-bar" id="pwb4"></div>
+                </div>
+                <div class="pw-label" id="pwLabel">Trop court</div>
+              </div>
+              <div class="field-err" id="rPwErr"></div>
+            </div>
+            <div class="field">
+              <div class="field-label">Confirmer *</div>
+              <div class="field-wrap">
+                <i class="fas fa-lock field-ico"></i>
+                <input class="field-input" type="password" id="rPw2" placeholder="Répète le mot de passe" autocomplete="new-password">
+                <i class="fas fa-eye field-eye" id="rEye2"></i>
+              </div>
+              <div class="field-err" id="rPw2Err"></div>
+            </div>
+          </div>
+
+          <div class="check-row">
+            <input type="checkbox" id="rTerms">
+            <label for="rTerms">J'accepte les <a href="#">conditions d'utilisation</a> et la <a href="#">politique de confidentialité</a> d'AnxHub Market.</label>
+          </div>
+
+          <button class="btn btn-primary" id="btnRegister">
+            <i class="fas fa-arrow-right"></i> Continuer
+          </button>
+          <div style="text-align:center;margin-top:14px;font-size:.8rem;color:var(--gray-400)">
+            Déjà un compte ? <a href="#" id="toLogin" style="color:var(--accent);font-weight:500;text-decoration:none;">Se connecter</a>
+          </div>
+        </div>
+
+        <!-- ── ONBOARDING ── -->
+        <div class="panel" id="panelOnboard">
+          <div class="form-eyebrow">Étape 2 sur 3</div>
+          <div class="form-title">Ton profil vendeur.</div>
+          <div class="form-sub">Ces infos personnalisent ton expérience sur la plateforme.</div>
+
+          <div style="font-size:.78rem;font-weight:500;color:var(--gray-600);margin-bottom:8px;">Choisis ton avatar</div>
+          <div class="av-grid" id="avGrid">
+            <div class="av-opt on" data-av="🦁">🦁</div>
+            <div class="av-opt" data-av="🐯">🐯</div>
+            <div class="av-opt" data-av="🦊">🦊</div>
+            <div class="av-opt" data-av="🦅">🦅</div>
+            <div class="av-opt" data-av="🐉">🐉</div>
+            <div class="av-opt" data-av="⚡">⚡</div>
+            <div class="av-opt" data-av="🔥">🔥</div>
+            <div class="av-opt" data-av="💎">💎</div>
+          </div>
+
+          <div class="field-stack">
+            <div class="field-row">
+              <div class="field">
+                <div class="field-label">Prénom *</div>
+                <div class="field-wrap">
+                  <i class="fas fa-user field-ico"></i>
+                  <input class="field-input" type="text" id="oFirst" placeholder="Kofi" autocomplete="given-name">
+                </div>
+                <div class="field-err" id="oFirstErr"></div>
+              </div>
+              <div class="field">
+                <div class="field-label">Nom</div>
+                <div class="field-wrap">
+                  <i class="fas fa-user field-ico"></i>
+                  <input class="field-input" type="text" id="oLast" placeholder="Diabaté" autocomplete="family-name">
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Pseudo *</div>
+              <div class="field-wrap">
+                <i class="fas fa-at field-ico"></i>
+                <input class="field-input" type="text" id="oUser" placeholder="kofi_digital" maxlength="25">
+              </div>
+              <div class="field-err" id="oUserErr"></div>
+            </div>
+            <div class="field">
+              <div class="field-label">WhatsApp *</div>
+              <div class="field-wrap">
+                <i class="fab fa-whatsapp field-ico"></i>
+                <input class="field-input" type="tel" id="oPhone" placeholder="+226 70 00 00 00">
+              </div>
+              <div class="field-err" id="oPhoneErr"></div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <div class="field-label">Pays *</div>
+                <div class="field-wrap">
+                  <i class="fas fa-globe field-ico"></i>
+                  <select class="field-input field-select" id="oCountry">
+                    <option value="">Pays...</option>
+                    <option value="BF">🇧🇫 Burkina Faso</option>
+                    <option value="CI">🇨🇮 Côte d'Ivoire</option>
+                    <option value="SN">🇸🇳 Sénégal</option>
+                    <option value="ML">🇲🇱 Mali</option>
+                    <option value="TG">🇹🇬 Togo</option>
+                    <option value="BJ">🇧🇯 Bénin</option>
+                    <option value="NE">🇳🇪 Niger</option>
+                    <option value="GN">🇬🇳 Guinée</option>
+                    <option value="GH">🇬🇭 Ghana</option>
+                    <option value="CM">🇨🇲 Cameroun</option>
+                    <option value="NG">🇳🇬 Nigeria</option>
+                    <option value="OTHER">🌍 Autre</option>
+                  </select>
+                  <i class="fas fa-chevron-down field-sel-arr"></i>
+                </div>
+                <div class="field-err" id="oCountryErr"></div>
+              </div>
+              <div class="field">
+                <div class="field-label">Ville</div>
+                <div class="field-wrap">
+                  <i class="fas fa-location-dot field-ico"></i>
+                  <input class="field-input" type="text" id="oCity" placeholder="Ouagadougou">
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Tu es...</div>
+              <div class="field-wrap">
+                <i class="fas fa-briefcase field-ico"></i>
+                <select class="field-input field-select" id="oRole">
+                  <option value="">Ton profil</option>
+                  <option value="reseller">🔄 Revendeur digital</option>
+                  <option value="creator">🎨 Créateur de contenu</option>
+                  <option value="freelance">💻 Freelance / Dev</option>
+                  <option value="student">📚 Étudiant entrepreneur</option>
+                  <option value="other">🌟 Autre</option>
+                </select>
+                <i class="fas fa-chevron-down field-sel-arr"></i>
+              </div>
+            </div>
+          </div>
+
+          <div style="font-size:.78rem;font-weight:500;color:var(--gray-600);margin-bottom:9px;">Ce que tu vends</div>
+          <div class="int-chips" id="intChips">
+            <div class="int-chip on" data-v="vpn"><i class="fas fa-shield-halved"></i>VPN</div>
+            <div class="int-chip" data-v="streaming"><i class="fas fa-film"></i>Streaming</div>
+            <div class="int-chip" data-v="ai"><i class="fas fa-robot"></i>IA & Outils</div>
+            <div class="int-chip" data-v="gaming"><i class="fas fa-gamepad"></i>Gaming</div>
+            <div class="int-chip" data-v="ebooks"><i class="fas fa-book"></i>E-books</div>
+            <div class="int-chip" data-v="software"><i class="fas fa-key"></i>Logiciels</div>
+            <div class="int-chip" data-v="music"><i class="fas fa-music"></i>Musique</div>
+          </div>
+
+          <button class="btn btn-primary" id="btnOnboard">
+            <i class="fas fa-rocket"></i> Terminer et accéder au dashboard
+          </button>
+          <button class="btn btn-secondary" id="btnOnboardBack">
+            <i class="fas fa-arrow-left"></i> Retour
+          </button>
+        </div>
+
+        <!-- ── WELCOME ── -->
+        <div class="panel" id="panelWelcome">
+          <div class="welcome-wrap">
+            <div class="w-badge">🎉</div>
+            <div class="w-title">Bienvenue !</div>
+            <div class="w-sub">Ton compte est prêt. Explore tout ce que tu peux faire sur AnxHub Market.</div>
+            <div class="perks">
+              <div class="perk">
+                <div class="perk-ic" style="background:#fff4f0;color:var(--accent)"><i class="fas fa-store"></i></div>
+                <div>
+                  <div class="perk-title">Crée jusqu'à 2 boutiques</div>
+                  <div class="perk-sub">Lien personnalisé + thème unique pour chaque boutique</div>
+                </div>
+              </div>
+              <div class="perk">
+                <div class="perk-ic" style="background:#ecfdf5;color:var(--green)"><i class="fas fa-chart-line"></i></div>
+                <div>
+                  <div class="perk-title">Statistiques en temps réel</div>
+                  <div class="perk-sub">Vues, ventes, revenus — tout dans ton dashboard</div>
+                </div>
+              </div>
+              <div class="perk">
+                <div class="perk-ic" style="background:#eff6ff;color:#2563eb"><i class="fab fa-whatsapp"></i></div>
+                <div>
+                  <div class="perk-title">Commandes via WhatsApp</div>
+                  <div class="perk-sub">Tes clients commandent en 1 clic, tu reçois directement</div>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-primary" id="btnGoDash">
+              <i class="fas fa-arrow-right"></i> Accéder à mon dashboard
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+         signInWithPopup, GoogleAuthProvider, sendPasswordResetEmail,
+         updateProfile, onAuthStateChanged }
+         from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getDatabase, ref, get, set }
+         from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const app  = initializeApp({
+  apiKey:"AIzaSyCd4kkoi36uqGeGnQ__f_Ddj3awpZ3W5LQ",
+  authDomain:"jjnfnnd-78039.firebaseapp.com",
+  databaseURL:"https://jjnfnnd-78039-default-rtdb.firebaseio.com",
+  projectId:"jjnfnnd-78039",
+  storageBucket:"jjnfnnd-78039.firebasestorage.app",
+  messagingSenderId:"240273882398",
+  appId:"1:240273882398:web:bbeed702d538063be71d0f"
+});
+const auth = getAuth(app);
+const db   = getDatabase(app);
+const gp   = new GoogleAuthProvider();
+
+let user = null, mode = 'login';
+const G = id => document.getElementById(id);
+const V = id => (G(id)?.value?.trim() ?? '');
+
+/* Toast */
+function toast(msg, type='i') {
+  const ic = {s:'check-circle',e:'circle-exclamation',i:'circle-info'};
+  const t = document.createElement('div');
+  t.className = `toast toast-${type}`;
+  t.innerHTML = `<i class="fas fa-${ic[type]}"></i>${msg}`;
+  G('toasts').appendChild(t);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),350);},4500);
+}
+
+/* Loading */
+function setLoad(id, on) {
+  const b = G(id); if(!b) return;
+  b.disabled = on;
+  if(on){b.__h=b.innerHTML; b.innerHTML='<div class="spinner"></div> Patiente...';}
+  else{b.innerHTML=b.__h||b.innerHTML;}
+}
+
+/* Errors */
+function setErr(id, msg){const e=G(id);if(e){e.textContent=msg;e.classList.add('on');}}
+function clrErrs(...ids){ids.forEach(id=>{const e=G(id);if(e){e.textContent='';e.classList.remove('on');}});}
+
+function fbErr(code){
+  return ({
+    'auth/email-already-in-use':'Cet email est déjà utilisé.',
+    'auth/invalid-email':'Email invalide.',
+    'auth/weak-password':'Mot de passe trop faible.',
+    'auth/user-not-found':'Aucun compte avec cet email.',
+    'auth/wrong-password':'Mot de passe incorrect.',
+    'auth/invalid-credential':'Email ou mot de passe incorrect.',
+    'auth/too-many-requests':'Trop de tentatives. Réessaie plus tard.',
+    'auth/network-request-failed':'Problème de connexion internet.',
+    'auth/popup-closed-by-user':''
+  })[code] || 'Une erreur est survenue.';
+}
+
+/* Navigation */
+function goTo(p) {
+  mode = p;
+  ['Login','Register','Onboard','Welcome'].forEach(n=>{G('panel'+n)?.classList.remove('on');});
+  G('panel'+p[0].toUpperCase()+p.slice(1))?.classList.add('on');
+  syncSidebar(p);
+  syncProgress(p);
+  syncTopbar(p);
+}
+
+function syncSidebar(p) {
+  const map = {login:0,register:0,onboard:1,welcome:2};
+  const active = map[p] ?? 0;
+  [0,1,2].forEach(i => {
+    const c = G('sc'+i), s = G('st'+i);
+    if(!c||!s) return;
+    if(i < active)      { c.className='step-circle done'; c.innerHTML='<i class="fas fa-check"></i>'; s.classList.remove('next'); }
+    else if(i===active) { c.className='step-circle curr'; c.textContent=String(i+1).padStart(2,'0'); s.classList.remove('next'); }
+    else                { c.className='step-circle next'; c.textContent=String(i+1).padStart(2,'0'); s.classList.add('next'); }
+  });
+}
+
+function syncProgress(p) {
+  const bar = G('progressBar');
+  const segs = [G('p0'),G('p1'),G('p2')];
+  if(p==='login'||p==='register'){bar.classList.remove('show');return;}
+  bar.classList.add('show');
+  const n = {onboard:1,welcome:3}[p]||0;
+  segs.forEach((s,i)=>{if(!s)return;s.className='prog-seg'+(i<n?' done':i===n-1?' active':'');});
+}
+
+function syncTopbar(p) {
+  const sw = G('topSwitch');
+  if(!sw) return;
+  if(p==='onboard'||p==='welcome'){sw.style.display='none';return;}
+  sw.style.display='';
+  if(p==='login'){
+    sw.innerHTML = 'Pas encore de compte ? <a href="#" id="switchLink">Créer mon compte</a>';
+    G('switchLink')?.addEventListener('click',e=>{e.preventDefault();goTo('register');});
+  } else {
+    sw.innerHTML = 'Déjà un compte ? <a href="#" id="switchLink">Se connecter</a>';
+    G('switchLink')?.addEventListener('click',e=>{e.preventDefault();goTo('login');});
+  }
+}
+
+/* Auth state */
+onAuthStateChanged(auth, async u => {
+  if(!u) return;
+  user = u;
+  const snap = await get(ref(db, `users/${u.uid}/profileComplete`));
+  if(snap.exists() && snap.val()===true) {
+    window.location.href = 'dashboard.html';
+  } else if(mode!=='onboard' && mode!=='welcome') {
+    prefillFromGoogle(u);
+    goTo('onboard');
+  }
+});
+
+function prefillFromGoogle(u) {
+  if(!u.displayName) return;
+  const pts = u.displayName.split(' ');
+  const f=G('oFirst'); if(f) f.value=pts[0]||'';
+  const l=G('oLast');  if(l) l.value=pts.slice(1).join(' ')||'';
+  const un=G('oUser'); if(un) un.value=(pts[0]||'').toLowerCase().replace(/[^a-z0-9]/g,'')+Math.floor(Math.random()*99+1);
+}
+
+/* Google */
+async function googleAuth() {
+  try {
+    const r = await signInWithPopup(auth, gp);
+    user = r.user;
+    const snap = await get(ref(db,`users/${user.uid}/profileComplete`));
+    if(snap.exists() && snap.val()===true) { window.location.href='dashboard.html'; }
+    else { prefillFromGoogle(user); goTo('onboard'); }
+  } catch(e) { if(e.code!=='auth/popup-closed-by-user') toast(fbErr(e.code),'e'); }
+}
+
+/* Register */
+async function doRegister() {
+  clrErrs('rEmailErr','rPwErr','rPw2Err');
+  const email=V('rEmail'), pw=V('rPw'), pw2=V('rPw2');
+  let ok=true;
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){setErr('rEmailErr','Email invalide.');ok=false;}
+  if(!pw||pw.length<8){setErr('rPwErr','Minimum 8 caractères requis.');ok=false;}
+  if(pw!==pw2){setErr('rPw2Err','Les mots de passe ne correspondent pas.');ok=false;}
+  if(!G('rTerms').checked){toast('Accepte les conditions pour continuer.','e');ok=false;}
+  if(!ok) return;
+  setLoad('btnRegister',true);
+  try {
+    const c = await createUserWithEmailAndPassword(auth, email, pw);
+    user = c.user;
+    await set(ref(db,`users/${user.uid}`),{
+      email, createdAt:Date.now(), profileComplete:false, plan:'starter', shopCount:0
+    });
+    toast('Compte créé ! Complète ton profil.','s');
+    goTo('onboard');
+  } catch(e) { toast(fbErr(e.code),'e'); setLoad('btnRegister',false); }
+}
+
+/* Login */
+async function doLogin() {
+  clrErrs('lEmailErr','lPwErr');
+  const email=V('lEmail'), pw=V('lPw');
+  let ok=true;
+  if(!email){setErr('lEmailErr','Email requis.');ok=false;}
+  if(!pw){setErr('lPwErr','Mot de passe requis.');ok=false;}
+  if(!ok) return;
+  setLoad('btnLogin',true);
+  try {
+    await signInWithEmailAndPassword(auth, email, pw);
+    toast('Connexion réussie !','s');
+  } catch(e) { toast(fbErr(e.code),'e'); setLoad('btnLogin',false); }
+}
+
+/* Onboard */
+async function doOnboard() {
+  if(!user){toast('Session expirée. Recharge la page.','e');return;}
+  clrErrs('oFirstErr','oUserErr','oPhoneErr','oCountryErr');
+  const first=V('oFirst'), last=V('oLast');
+  const uname=V('oUser').toLowerCase().replace(/[^a-z0-9_]/g,'');
+  const phone=V('oPhone'), country=G('oCountry').value;
+  const city=V('oCity'), role=G('oRole').value;
+  const avatar=document.querySelector('.av-opt.on')?.dataset.av||'🦁';
+  const interests=[...document.querySelectorAll('.int-chip.on')].map(c=>c.dataset.v);
+  let ok=true;
+  if(!first){setErr('oFirstErr','Prénom requis.');ok=false;}
+  if(uname.length<3){setErr('oUserErr','Pseudo trop court (min 3 car.).');ok=false;}
+  if(!phone){setErr('oPhoneErr','WhatsApp requis.');ok=false;}
+  if(!country){setErr('oCountryErr','Pays requis.');ok=false;}
+  if(!ok) return;
+  setLoad('btnOnboard',true);
+  const snapU = await get(ref(db,`usernames/${uname}`));
+  if(snapU.exists() && snapU.val()!==user.uid){
+    setErr('oUserErr','Ce pseudo est déjà pris. Choisis-en un autre.');
+    setLoad('btnOnboard',false); return;
+  }
+  try {
+    const dn = `${first} ${last}`.trim();
+    await updateProfile(user,{displayName:dn, photoURL:avatar});
+    await set(ref(db,`users/${user.uid}`),{
+      email:user.email, firstName:first, lastName:last, displayName:dn,
+      username:uname, avatar, phone, country, city, role, interests,
+      plan:'starter', shopCount:0, profileComplete:true,
+      createdAt:Date.now(), updatedAt:Date.now()
+    });
+    await set(ref(db,`usernames/${uname}`), user.uid);
+    goTo('welcome');
+  } catch(e){ toast(fbErr(e.code),'e'); }
+  setLoad('btnOnboard',false);
+}
+
+/* Forgot */
+async function doForgot() {
+  const email=V('forgotEmail');
+  if(!email){toast('Saisis ton email.','e');return;}
+  setLoad('forgotBtn',true);
+  try {
+    await sendPasswordResetEmail(auth,email);
+    toast('Lien de réinitialisation envoyé !','s');
+    G('forgotOverlay').classList.remove('show');
+  } catch(e){ toast(fbErr(e.code),'e'); }
+  setLoad('forgotBtn',false);
+}
+
+/* PW Strength */
+function pwStrength(pw) {
+  const m=G('pwStrength');
+  const bars=[G('pwb1'),G('pwb2'),G('pwb3'),G('pwb4')];
+  const lbl=G('pwLabel');
+  if(!pw){m.classList.remove('show');return;}
+  m.classList.add('show');
+  bars.forEach(b=>{if(b)b.className='pw-bar';});
+  let s=0;
+  if(pw.length>=8)s++;
+  if(pw.length>=12)s++;
+  if(/[A-Z]/.test(pw)&&/[0-9]/.test(pw))s++;
+  if(/[^A-Za-z0-9]/.test(pw))s++;
+  const cls=s<=1?'weak':s===2?'fair':'strong';
+  const lbls=['','Faible','Moyen','Fort','Très fort'];
+  const cols=['','var(--red)','var(--gold)','var(--green)','var(--green)'];
+  for(let i=0;i<s;i++) bars[i]?.classList.add(cls);
+  if(lbl){lbl.textContent=pw.length<8?'Trop court':(lbls[s]||'Très fort');lbl.style.color=cols[s]||'var(--green)';}
+}
+
+/* Eye toggle */
+function toggleEye(inp, eye) {
+  const i=G(inp),e=G(eye);if(!i||!e)return;
+  const h=i.type==='password'; i.type=h?'text':'password';
+  e.className=`fas fa-eye${h?'-slash':''} field-eye`;
+}
+
+/* Events */
+G('gBtnLogin').addEventListener('click',googleAuth);
+G('gBtnReg').addEventListener('click',googleAuth);
+G('btnLogin').addEventListener('click',doLogin);
+G('btnRegister').addEventListener('click',doRegister);
+G('btnOnboard').addEventListener('click',doOnboard);
+G('btnOnboardBack').addEventListener('click',()=>goTo('register'));
+G('btnGoDash').addEventListener('click',()=>{window.location.href='dashboard.html';});
+G('toRegister').addEventListener('click',e=>{e.preventDefault();goTo('register');});
+G('toLogin').addEventListener('click',e=>{e.preventDefault();goTo('login');});
+G('switchLink')?.addEventListener('click',e=>{e.preventDefault();goTo('register');});
+G('lEye').addEventListener('click',()=>toggleEye('lPw','lEye'));
+G('rEye').addEventListener('click',()=>toggleEye('rPw','rEye'));
+G('rEye2').addEventListener('click',()=>toggleEye('rPw2','rEye2'));
+G('rPw').addEventListener('input',e=>pwStrength(e.target.value));
+G('forgotLink').addEventListener('click',e=>{e.preventDefault();G('forgotOverlay').classList.add('show');});
+G('forgotClose').addEventListener('click',()=>G('forgotOverlay').classList.remove('show'));
+G('forgotOverlay').addEventListener('click',e=>{if(e.target===G('forgotOverlay'))G('forgotOverlay').classList.remove('show');});
+G('forgotBtn').addEventListener('click',doForgot);
+G('oUser').addEventListener('input',function(){this.value=this.value.toLowerCase().replace(/[^a-z0-9_]/g,'');});
+document.querySelectorAll('.av-opt').forEach(el=>{
+  el.addEventListener('click',()=>{
+    document.querySelectorAll('.av-opt').forEach(a=>a.classList.remove('on'));
+    el.classList.add('on');
+  });
+});
+document.querySelectorAll('.int-chip').forEach(el=>el.addEventListener('click',()=>el.classList.toggle('on')));
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') G('forgotOverlay').classList.remove('show');
+  if(e.key==='Enter'){
+    if(mode==='login') doLogin();
+    else if(mode==='register') doRegister();
+    else if(mode==='onboard') doOnboard();
+  }
+});
+goTo('login');
+</script>
+</body>
+</html>
